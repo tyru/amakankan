@@ -118,7 +118,9 @@ const onExtensionButtonClickedAtOrderHistoryPage = (tab) => {
 };
 
 const onExtensionButtonClickedAtUnknownPage = (tab) => {
-  console.log('🍣');
+  chrome.tabs.create({
+    url: 'https://amakan.net'
+  });
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
