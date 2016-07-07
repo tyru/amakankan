@@ -47,10 +47,48 @@ const sendPageUrl = ({url, title, imageUrl}) => new Promise((done) => {
         message: '登録成功(' + (Q.finishedCount + 1) + '/' + (Q.length + Q.finishedCount + 1) + ')',
         priority: 0,
       }
-    )
-    done()
-  })
-})
+    );
+    done();
+  });
+});
+
+class UrlDetection {
+  /**
+   * @param {String} url
+   */
+  constructor(url) {
+    this.element = document.createElement('a');
+    this.element.href = url;
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasAmazonHostname() {
+    return /amazon\.co\.jp/.test(this.element.hostname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasOrderHistoryPathname() {
+    return /\/order-history/.test(this.element.pathname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasOrderHistoryUrl() {
+    return this.hasAmazonHostname() && this.hasOrderHistoryPathname();
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasProductUrl() {
+    return this.hasAmazonHostname() && !this.hasOrderHistoryPathname();
+  }
+}
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   Q.push(() => sendPageUrl(request))
@@ -58,15 +96,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 })
 
 chrome.browserAction.onClicked.addListener((tab) => {
-  const urlInfo = document.createElement('a')
-  urlInfo.href = tab.url
-  if (!/amazon\.co\.jp/.test(urlInfo.hostname)) return console.log('🍣')
-  if (/\/order-history/.test(urlInfo.pathname)) {
-    return notify({type: 'basic', title: '開始', iconUrl: 'images/icon-38.png', message: '登録中...', priority: 1, requireInteraction: true})
+  const detection = new UrlDetection(tab.url);
+  if (detection.hasOrderHistoryUrl()) {
+    notify({type: 'basic', title: '開始', iconUrl: 'images/icon-38.png', message: '登録中...', priority: 1, requireInteraction: true})
       .then((notifyId) => {
         notificationId = notifyId
         chrome.tabs.sendMessage(tab.id, {action: 'scrapingAllHistory'})
-      })
+      });
+  } else if (detection.hasProductUrl()) {
+    chrome.tabs.create({url: 'https://amakan.net/search?query=' + tab.url})
+  } else {
+    console.log('🍣');
   }
-  chrome.tabs.create({url: 'https://amakan.net/search?query=' + tab.url})
 })
