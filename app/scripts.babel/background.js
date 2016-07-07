@@ -21,13 +21,15 @@ Q.start = () => {
   Q.execShift()
 }
 
-const notify = (opt) => new Promise((ok) => {
-  chrome.notifications.create(opt, ok)
-})
+const notify = (options) => {
+  return new Promise((done) => {
+    chrome.notifications.create(options, done);
+  });
+};
 
 const sendPageUrl = ({url, title, imageUrl}) => new Promise((done) => {
   window.fetch(
-    'https://amakan.net:3000/imports',
+    'https://amakan.net/imports',
     {
       body: JSON.stringify({
         amazon_product_url: url,
@@ -90,22 +92,47 @@ class UrlDetection {
   }
 }
 
+const onExtensionButtonClickedAtProductPage = (tab) => {
+  chrome.tabs.create({
+    url: `https://amakan.net/search?query=${tab.url}`
+  });
+};
+
+const onExtensionButtonClickedAtOrderHistoryPage = (tab) => {
+  notify({
+    iconUrl: 'images/icon-38.png',
+    message: '登録中...',
+    priority: 1,
+    requireInteraction: true,
+    title: '開始',
+    type: 'basic',
+  }).then((notifyId) => {
+    notificationId = notifyId;
+    chrome.tabs.sendMessage(
+      tab.id,
+      {
+        action: 'scrapingAllHistory'
+      }
+    );
+  });
+};
+
+const onExtensionButtonClickedAtUnknownPage = (tab) => {
+  console.log('🍣');
+};
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   Q.push(() => sendPageUrl(request))
   if (Q.length > 0 && Q.workingCount <= 2) Q.start()
-})
+});
 
 chrome.browserAction.onClicked.addListener((tab) => {
   const detection = new UrlDetection(tab.url);
   if (detection.hasOrderHistoryUrl()) {
-    notify({type: 'basic', title: '開始', iconUrl: 'images/icon-38.png', message: '登録中...', priority: 1, requireInteraction: true})
-      .then((notifyId) => {
-        notificationId = notifyId
-        chrome.tabs.sendMessage(tab.id, {action: 'scrapingAllHistory'})
-      });
+    onExtensionButtonClickedAtOrderHistoryPage(tab);
   } else if (detection.hasProductUrl()) {
-    chrome.tabs.create({url: 'https://amakan.net/search?query=' + tab.url})
+    onExtensionButtonClickedAtProductPage(tab);
   } else {
-    console.log('🍣');
+    onExtensionButtonClickedAtUnknownPage(tab);
   }
-})
+});
