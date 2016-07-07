@@ -8,7 +8,7 @@ Chrome Extension for register amakan.net
 
 ### Chrome for Windows Stable チャンネル以外の方
 
-- https://github.com/pastak/amakan-register/releases にアクセス
+- https://github.com/amakan/amakankan/releases にアクセス
 - 最新のリリースに添付されている`amakankan.crx` をダウンロード
 - chrome://extensions/ を開く
 - ダウンロードしたファイルをドラッグアンドドロップするとインストールできます
@@ -17,8 +17,8 @@ WindowsのStableチャンネルではこの方法ではインストール出来�
 
 ### 全ての方向け
 
-- `$ git clone git@github.com:pastak/amakan-register.git`
-- `$ cd amakan-register`
+- `$ git clone git@github.com:amakan/amakankan.git`
+- `$ cd amakankan`
 - `$ npm install`
 - `$ gulp build`
 - `chrome://extensions/`で `app` ディレクトリを読み込む
