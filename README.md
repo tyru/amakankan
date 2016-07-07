@@ -1,26 +1,10 @@
 # amakankan
-
-amakankanは、https://amakan.net/ の公式Chrome拡張です。
-
-![demo](/images/demo.gif)
+amakankanは、https://amakan.net/ の公式Chrome拡張です。  
+[amakankan - Chromeウェブストア](https://chrome.google.com/webstore/detail/amakankan/cbbcooiceghdbkklnkdahccnbbfleoll) からインストールできます。
 
 ## 使い方
 
 1. Amazonの[注文履歴ページ](https://www.amazon.co.jp/gp/css/order-history)でボタンを押すと、読んだ本をamakanに一括登録できます
 2. Amazonの商品ページでボタンを押すと、amakan上の対応するページに飛べます
 
-## インストール方法
-
-1. https://github.com/amakan/amakankan/releases から amakankan.crx をダウンロードします
-2. chrome://extensions/ (「設定」の「拡張機能」) にアクセスします
-3. ダウンロードしておいた amakankan.crx を画面上にドラッグ&ドロップします
-
-## 開発者の方へ
-以下の手順でソースコードをビルドした上で、chrome://extensions/ で「パッケージ化されていない拡張を取り込む...」というボタンから app ディレクトリを開くとインストールできます。
-
-```sh
-git clone https://github.com/amakan/amakankan.git
-cd amakankan
-npm install
-gulp build
-```
+![demo](/images/demo.gif)
