@@ -8,16 +8,14 @@ Q.finishedCount = 0
 Q.execShift = () => {
   const action = Q.shift()
   Q.workingCount++
-  try {
-    action().then(() => {
-      Q.workingCount--
-      Q.finishedCount++
-      Q.execShift()
-    }).catch((e) => {
-      Q.finishedCount++
-      Q.workingCount--
-    })
-  }
+  action().then(() => {
+    Q.workingCount--
+    Q.finishedCount++
+    Q.execShift()
+  }).catch((e) => {
+    Q.finishedCount++
+    Q.workingCount--
+  })
 }
 Q.start = () => {
   Q.execShift()
