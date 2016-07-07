@@ -1,38 +1,37 @@
-# amakan-register
+# amakankan
 
-Chrome Extension for register amakan.net
+amakankanは、https://amakan.net/ を便利に使うための公式Chrome拡張です。
 
-[![https://gyazo.com/9818b330fe1c97867013745e7ad3d671](https://i.gyazo.com/9818b330fe1c97867013745e7ad3d671.gif)](https://gyazo.com/9818b330fe1c97867013745e7ad3d671)
+![demo](/images/demo.gif)
 
-## Install
+## 何ができるの？
 
-### Chrome for Windows Stable チャンネル以外の方
+1. Amazonの注文履歴ページでボタンを押すと、読んだ本をamakanに一括登録できます
+2. Amazonの商品ページでボタンを押すと、amakan上の対応するページに飛べます
 
-- https://github.com/amakan/amakankan/releases にアクセス
-- 最新のリリースに添付されている`amakankan.crx` をダウンロード
-- chrome://extensions/ を開く
-- ダウンロードしたファイルをドラッグアンドドロップするとインストールできます
+## インストール方法
 
-WindowsのStableチャンネルではこの方法ではインストール出来ないはず・・・
+### 一般の方向け
 
-### 全ての方向け
+1. https://github.com/amakan/amakankan/releases から amakan.crx をダウンロードします
+2. [chrome://extensions/](chrome://extensions/) にアクセスします
+3. ダウンロードしておいた amakan.crx を画面上にドラッグ&ドロップします
 
-- `$ git clone git@github.com:amakan/amakankan.git`
-- `$ cd amakankan`
-- `$ npm install`
-- `$ gulp build`
-- `chrome://extensions/`で `app` ディレクトリを読み込む
+### 開発者の方向け
+以下の手順でソースコードをビルドした上で、[chrome://extensions/](chrome://extensions/) で「パッケージ化されていない拡張を取り込む...」というボタンから app ディレクトリを開くとインストールできます。
 
-## Usage
+```sh
+git clone https://github.com/amakan/amakankan.git
+cd amakankan
+npm install
+gulp build
+```
 
-### 特定の書籍のamakan詳細ページを開きたい
+## 使い方
 
-- その書籍のページに行って、ツールバーに表示されているボタンを押すとamakanのページが開きます
-
-### 購入履歴からインポートしたい
-
-- 購入履歴ページ ( https://www.amazon.co.jp/gp/css/order-history )に行きます
-- ツールバーに表示されているボタンをクリックすると、登録開始されます。
-- Amazonの購入履歴を1996年まで遡ってインポートを実行します
-- 最初はゆっくりですが、ちょっと待つと勢い良く通知が出ると思います
-- 終わりのタイミングの通知とかは特に出ません
+### 注文履歴から読んだ本を取り込む
+1. [注文履歴ページ](https://www.amazon.co.jp/gp/css/order-history) にアクセスします
+2. ツールバーに表示されているamakankanのボタンを押すと、登録処理を開始します
+3. Amazonの購入履歴を1996年まで遡ってゆっくりと登録されていきます
+4. 書籍が登録されていく過程が通知が表示されます
+5. 完了したタイミングで特に通知などは表示されないのでご注意ください
