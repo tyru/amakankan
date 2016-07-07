@@ -1,13 +1,13 @@
 # amakankan
 
-amakankanは、https://amakan.net/ を便利に使うためのamakan公式Chrome拡張です。
+amakankanは、https://amakan.net/ の公式Chrome拡張です。
+
+![demo](/images/demo.gif)
 
 ## 使い方
 
 1. Amazonの[注文履歴ページ](https://www.amazon.co.jp/gp/css/order-history)でボタンを押すと、読んだ本をamakanに一括登録できます
 2. Amazonの商品ページでボタンを押すと、amakan上の対応するページに飛べます
-
-![demo](/images/demo.gif)
 
 ## インストール方法
 
