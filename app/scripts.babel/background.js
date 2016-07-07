@@ -25,40 +25,31 @@ const notify = (opt) => new Promise((ok) => {
   chrome.notifications.create(opt, ok)
 })
 
-const sendPageUrl = ({url, title, imageUrl}) => new Promise((ok) => {
-  const xhr = new XMLHttpRequest()
-  xhr.open('GET', `https://amakan.net/search?query=${url}`)
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState < 4) return
-    if (xhr.readyState === 4 && !/amakan\.net\/products\//.test(xhr.responseURL)) return ok()
-    const bookPage = xhr.responseURL
-    if (xhr.readyState === 4) console.log(title, bookPage, url)
-    const html = document.createElement('html')
-    html.innerHTML = xhr.responseText
-    let csrfToken
-    try {
-      csrfToken = html.querySelector('meta[name=csrf-token]').content
-    } catch (e) {
-      return ok()
-    }
-    window.fetch(bookPage + '/taste', {
-      method: 'POST',
+const sendPageUrl = ({url, title, imageUrl}) => new Promise((done) => {
+  window.fetch(
+    'https://amakan.net:3000/imports',
+    {
+      body: JSON.stringify({
+        amazon_product_url: url,
+      }),
+      credentials: 'include',
       headers: {
-        'X-CSRF-Token': csrfToken
+        'Content-Type': 'application/json'
       },
-      credentials: 'include'
-    })
-      .then((res) => {
-        chrome.notifications.update(notificationId, {
-          title,
-          iconUrl: imageUrl,
-          message: '登録成功(' + (Q.finishedCount + 1) + '/' + (Q.length + Q.finishedCount + 1) + ')',
-          priority: 0
-        })
-        ok()
-      })
-  }
-  xhr.send(null)
+      method: 'POST',
+    }
+  ).then((response) => {
+    chrome.notifications.update(
+      notificationId,
+      {
+        title,
+        iconUrl: imageUrl,
+        message: '登録成功(' + (Q.finishedCount + 1) + '/' + (Q.length + Q.finishedCount + 1) + ')',
+        priority: 0,
+      }
+    )
+    done()
+  })
 })
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
