@@ -73,32 +73,53 @@ class UrlDetection {
   /**
    * @return {Boolean}
    */
-  hasOrderHistoryPathname() {
+  hasOrderAmazonHistoryPathname() {
     return /\/order-history/.test(this.element.pathname);
   }
 
   /**
    * @return {Boolean}
    */
-  hasOrderHistoryUrl() {
-    return this.hasAmazonHostname() && this.hasOrderHistoryPathname();
+  hasAmazonOrderHistoryUrl() {
+    return this.hasAmazonHostname() && this.hasOrderAmazonHistoryPathname();
   }
 
   /**
    * @return {Boolean}
    */
-  hasProductUrl() {
-    return this.hasAmazonHostname() && !this.hasOrderHistoryPathname();
+  hasAmazonProductUrl() {
+    return this.hasAmazonHostname() && !this.hasOrderAmazonHistoryPathname();
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBooklogHostname() {
+    return /booklog\.jp$/.test(this.element.hostname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBooklogShelfPathname() {
+    return /^\/users\/[^/]+$/.test(this.element.pathname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBooklogShelfUrl() {
+    return this.hasBooklogHostname() && this.hasBooklogShelfPathname();
   }
 }
 
-const onExtensionButtonClickedAtProductPage = (tab) => {
+const onExtensionButtonClickedAtAmazonProductPage = (tab) => {
   chrome.tabs.create({
     url: `https://amakan.net/search?query=${tab.url}`
   });
 };
 
-const onExtensionButtonClickedAtOrderHistoryPage = (tab) => {
+const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
   notify({
     iconUrl: 'images/icon-38.png',
     message: '登録中...',
@@ -111,11 +132,30 @@ const onExtensionButtonClickedAtOrderHistoryPage = (tab) => {
     chrome.tabs.sendMessage(
       tab.id,
       {
-        action: 'scrapingAllHistory'
+        action: 'scrapingAllAmazonHistory'
       }
     );
   });
 };
+
+const onExtensionButtonClickedAtBooklogShelfPage = (tab) => {
+  notify({
+    iconUrl: 'images/icon-38.png',
+    message: '登録中...',
+    priority: 1,
+    requireInteraction: true,
+    title: '開始',
+    type: 'basic',
+  }).then((notifyId) => {
+    notificationId = notifyId;
+    chrome.tabs.sendMessage(
+      tab.id,
+      {
+        action: 'scrapeAllBooklogReadHistory'
+      }
+    );
+  });
+}
 
 const onExtensionButtonClickedAtUnknownPage = (tab) => {
   chrome.tabs.create({
@@ -130,10 +170,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 chrome.browserAction.onClicked.addListener((tab) => {
   const detection = new UrlDetection(tab.url);
-  if (detection.hasOrderHistoryUrl()) {
-    onExtensionButtonClickedAtOrderHistoryPage(tab);
-  } else if (detection.hasProductUrl()) {
-    onExtensionButtonClickedAtProductPage(tab);
+  console.log(tab.url)
+  if (detection.hasAmazonOrderHistoryUrl()) {
+    onExtensionButtonClickedAtAmazonOrderHistoryPage(tab);
+  } else if (detection.hasAmazonProductUrl()) {
+    onExtensionButtonClickedAtAmazonProductPage(tab);
+  } else if (detection.hasBooklogShelfUrl()) {
+    onExtensionButtonClickedAtBooklogShelfPage(tab);
   } else {
     onExtensionButtonClickedAtUnknownPage(tab);
   }
