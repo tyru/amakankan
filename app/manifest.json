@@ -32,6 +32,17 @@
       ],
       "run_at": "document_end",
       "all_frames": false
+    },
+    {
+      "matches": [
+        "http://booklog.jp/*",
+        "https://booklog.jp/*"
+      ],
+      "js": [
+        "scripts/contentscript_booklog.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
     }
   ],
   "browser_action": {
