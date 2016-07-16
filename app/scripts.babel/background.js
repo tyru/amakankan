@@ -27,12 +27,13 @@ const notify = (options) => {
   });
 };
 
-const sendPageUrl = ({url, title, imageUrl}) => new Promise((done) => {
+const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
   window.fetch(
     'https://amakan.net/imports',
     {
       body: JSON.stringify({
         amazon_product_url: url,
+        read_at: readAt,
       }),
       credentials: 'include',
       headers: {

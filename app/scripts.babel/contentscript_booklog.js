@@ -13,8 +13,9 @@ const processPage = (json) => {
     const url = `https://www.amazon.co.jp/dp/${book.id}`
     const title = book.title
     const imageUrl = book.image
+    const readAt = book.read_at
     window.setTimeout(() => {
-      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl})
+      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl, readAt})
     }, 200 * index)
   })
 
