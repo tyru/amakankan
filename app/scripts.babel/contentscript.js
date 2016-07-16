@@ -38,12 +38,6 @@ const scrapingPage = (html) => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const actions = {
-    getBookInfo: () => {
-      const title = document.querySelector('#productTitle').textContent
-      const url = document.querySelector('link[rel=canonical]').href
-      const imageUrl = document.querySelector('#img-canvas > img').src
-      sendResponse({url, title, imageUrl})
-    },
     scrapingAllHistory: () => {
       for(let year = (new Date()).getFullYear(); year >= 1996; year--) {
         const pathNamePart = '/gp/your-account/order-history/ref=oh_aui_pagination_1_'
