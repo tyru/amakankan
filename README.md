@@ -1,4 +1,4 @@
-# amakankan
+# amakankan [![Build Status](https://travis-ci.org/amakan/amakankan.svg?branch=master)](https://travis-ci.org/amakan/amakankan)
 amakankanは、https://amakan.net の公式Chrome拡張です。  
 [amakankan - Chromeウェブストア](https://chrome.google.com/webstore/detail/amakankan/cbbcooiceghdbkklnkdahccnbbfleoll) からインストールできます。
 
