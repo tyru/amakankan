@@ -1,3 +1,9 @@
 {
-  "presets": ["es2015"]
+  "plugins": [
+    "transform-inline-environment-variables"
+  ],
+  "presets": [
+    "es2015",
+    "stage-3"
+  ]
 }

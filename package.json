@@ -4,45 +4,31 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "devDependencies": {
-    "babel-core": "^6.7.2",
-    "babel-preset-es2015": "^6.6.0",
-    "crx": "^3.0.3",
-    "del": "^2.2.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-cache": "^0.4.3",
-    "gulp-chrome-manifest": "0.0.13",
-    "gulp-clean-css": "^2.0.3",
-    "gulp-eslint": "^2.0.0",
-    "gulp-htmlmin": "^1.3.0",
-    "gulp-if": "^2.0.0",
-    "gulp-imagemin": "^2.4.0",
-    "gulp-livereload": "^3.8.1",
-    "gulp-load-plugins": "^1.2.0",
-    "gulp-size": "^2.1.0",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.3",
-    "gulp-useref": "^3.0.8",
-    "gulp-zip": "^3.2.0",
-    "main-bower-files": "^2.11.1",
-    "run-sequence": "^1.1.5",
-    "wiredep": "^4.0.0"
+  "scripts": {
+    "build": "npm run build:rm && npm run build:mkdir && npm run build:cp && npm run build:js",
+    "build:cp": "cp src/chrome/manifest.json dist/chrome/manifest.json && cp src/chrome/images/* dist/chrome/images",
+    "build:js": "npm run build:js:amazon && npm run build:js:background && npm run build:js:booklog",
+    "build:js:amazon": "browserify src/chrome/js/content-script-amazon.js -t babelify -o dist/chrome/js/content-script-amazon.js",
+    "build:js:background": "browserify src/chrome/js/background.js -t babelify -o dist/chrome/js/background.js",
+    "build:js:booklog": "browserify src/chrome/js/content-script-booklog.js -t babelify -o dist/chrome/js/content-script-booklog.js",
+    "build:mkdir": "mkdir -p dist/chrome/js && mkdir -p dist/chrome/images",
+    "build:rm": "rm -rf dist/chrome/* || 0",
+    "pack": "npm run build && npm run pack:crx",
+    "pack:crx": "crx pack dist/chrome -o dist/chrome/amakankan.crx && rm dist/chrome/key.pem",
+    "watch": "npm run build && npm run watch:cp & npm run watch:background",
+    "watch:background": "watchify src/chrome/js/background.js -t babelify -o dist/chrome/js/background.js -v",
+    "watch:cp": "watch 'npm run build:cp' src/chrome/images"
   },
-  "eslintConfig": {
-    "env": {
-      "node": true,
-      "browser": true
-    },
-    "globals": {
-      "chrome": true
-    },
-    "rules": {
-      "eol-last": 0,
-      "quotes": [
-        2,
-        "single"
-      ]
-    }
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-plugin-transform-inline-environment-variables": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-3": "^6.11.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "crx": "^3.0.3",
+    "object-assign": "^4.1.0",
+    "watch": "^0.19.1",
+    "watchify": "^3.7.0"
   }
 }
