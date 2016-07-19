@@ -1,3 +1,6 @@
+## 0.3.0
+- Support booklog
+
 ## 0.2.1
 - Update icon and description
 - Change button behavior on unknown page so that it opens amakan.net
