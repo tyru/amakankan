@@ -13,6 +13,7 @@
     "build:js:booklog": "browserify src/chrome/js/content-script-booklog.js -t babelify -o dist/chrome/js/content-script-booklog.js",
     "build:mkdir": "mkdir -p dist/chrome/js && mkdir -p dist/chrome/images",
     "build:rm": "rm -rf dist/chrome/* || 0",
+    "lint": "eslint src",
     "pack": "npm run build && npm run pack:crx",
     "pack:crx": "crx pack dist/chrome -o dist/chrome/amakankan.crx && rm dist/chrome/key.pem",
     "watch": "npm run build && npm run watch:cp & npm run watch:background",
@@ -26,6 +27,7 @@
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "crx": "^3.0.3",
+    "eslint": "^3.1.1",
     "object-assign": "^4.1.0",
     "watch": "^0.19.1",
     "watchify": "^3.7.0"

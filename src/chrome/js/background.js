@@ -1,25 +1,23 @@
-'use strict';
-
-let nextPageUrl = null
-let notificationId = null
-let Q = []
-Q.workingCount = 0
-Q.finishedCount = 0
+let nextPageUrl = null;
+let notificationId = null;
+let Q = [];
+Q.workingCount = 0;
+Q.finishedCount = 0;
 Q.execShift = () => {
-  const action = Q.shift()
-  Q.workingCount++
+  const action = Q.shift();
+  Q.workingCount++;
   action().then(() => {
-    Q.workingCount--
-    Q.finishedCount++
-    Q.execShift()
+    Q.workingCount--;
+    Q.finishedCount++;
+    Q.execShift();
   }).catch((e) => {
-    Q.finishedCount++
-    Q.workingCount--
-  })
-}
+    Q.finishedCount++;
+    Q.workingCount--;
+  });
+};
 Q.start = () => {
-  Q.execShift()
-}
+  Q.execShift();
+};
 
 const notify = (options) => {
   return new Promise((done) => {
@@ -29,17 +27,17 @@ const notify = (options) => {
 
 const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
   window.fetch(
-    'https://amakan.net/imports',
+    "https://amakan.net/imports",
     {
       body: JSON.stringify({
         amazon_product_url: url,
         read_at: readAt,
       }),
-      credentials: 'include',
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      method: 'POST',
+      method: "POST",
     }
   ).then((response) => {
     chrome.notifications.update(
@@ -47,7 +45,7 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
       {
         title,
         iconUrl: imageUrl,
-        message: '登録成功(' + (Q.finishedCount + 1) + '/' + (Q.length + Q.finishedCount + 1) + ')',
+        message: "登録成功(" + (Q.finishedCount + 1) + "/" + (Q.length + Q.finishedCount + 1) + ")",
         priority: 0,
       }
     );
@@ -60,7 +58,7 @@ class UrlDetection {
    * @param {String} url
    */
   constructor(url) {
-    this.element = document.createElement('a');
+    this.element = document.createElement("a");
     this.element.href = url;
   }
 
@@ -122,18 +120,18 @@ const onExtensionButtonClickedAtAmazonProductPage = (tab) => {
 
 const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
   notify({
-    iconUrl: 'images/icon-38.png',
-    message: '登録中...',
+    iconUrl: "images/icon-38.png",
+    message: "登録中...",
     priority: 1,
     requireInteraction: true,
-    title: '開始',
-    type: 'basic',
+    title: "開始",
+    type: "basic",
   }).then((notifyId) => {
     notificationId = notifyId;
     chrome.tabs.sendMessage(
       tab.id,
       {
-        action: 'scrapingAllAmazonHistory'
+        action: "scrapingAllAmazonHistory"
       }
     );
   });
@@ -141,37 +139,36 @@ const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
 
 const onExtensionButtonClickedAtBooklogShelfPage = (tab) => {
   notify({
-    iconUrl: 'images/icon-38.png',
-    message: '登録中...',
+    iconUrl: "images/icon-38.png",
+    message: "登録中...",
     priority: 1,
     requireInteraction: true,
-    title: '開始',
-    type: 'basic',
+    title: "開始",
+    type: "basic",
   }).then((notifyId) => {
     notificationId = notifyId;
     chrome.tabs.sendMessage(
       tab.id,
       {
-        action: 'scrapeAllBooklogReadHistory'
+        action: "scrapeAllBooklogReadHistory"
       }
     );
   });
-}
+};
 
 const onExtensionButtonClickedAtUnknownPage = (tab) => {
   chrome.tabs.create({
-    url: 'https://amakan.net'
+    url: "https://amakan.net"
   });
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  Q.push(() => sendPageUrl(request))
-  if (Q.length > 0 && Q.workingCount <= 2) Q.start()
+  Q.push(() => sendPageUrl(request));
+  if (Q.length > 0 && Q.workingCount <= 2) Q.start();
 });
 
 chrome.browserAction.onClicked.addListener((tab) => {
   const detection = new UrlDetection(tab.url);
-  console.log(tab.url)
   if (detection.hasAmazonOrderHistoryUrl()) {
     onExtensionButtonClickedAtAmazonOrderHistoryPage(tab);
   } else if (detection.hasAmazonProductUrl()) {
