@@ -66,10 +66,7 @@ gulp.task('chromeManifest', () => {
     .pipe($.chromeManifest({
       buildnumber: true,
       background: {
-        target: 'scripts/background.js',
-        exclude: [
-          'scripts/chromereload.js'
-        ]
+        target: 'scripts/background.js'
       }
   }))
   .pipe($.if('*.css', $.cleanCss({compatibility: '*'})))
