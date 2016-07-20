@@ -18,7 +18,7 @@
     "pack:crx": "crx pack dist/chrome -o dist/chrome/amakankan.crx && rm dist/chrome/key.pem",
     "pack:zip": "cd dist/chrome && zip -r amakankan.zip images js manifest.json",
     "test": "npm run lint && npm run pack",
-    "watch": "npm run build && npm run watch:cp & npm run watch:amazon & npm run watch:booklog & npm run watch:booklog",
+    "watch": "npm run build && npm run watch:cp & npm run watch:amazon & npm run watch:background & npm run watch:booklog",
     "watch:amazon": "watchify src/chrome/js/content-script-amazon.js -t babelify -o dist/chrome/js/content-script-amazon.js -v",
     "watch:background": "watchify src/chrome/js/background.js -t babelify -o dist/chrome/js/background.js -v",
     "watch:booklog": "watchify src/chrome/js/content-script-booklog.js -t babelify -o dist/chrome/js/content-script-booklog.js -v",
