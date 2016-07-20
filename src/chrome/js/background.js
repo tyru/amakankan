@@ -33,7 +33,7 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
         {
           title,
           iconUrl: imageUrl,
-          message: "申請完了",
+          message: "送信完了",
           priority: 0,
         }
       );
@@ -42,7 +42,7 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
         notificationId = chrome.notifications.create({
           title,
           iconUrl: imageUrl,
-          message: "申請完了",
+          message: "送信完了",
           priority: 0,
           type: "basic",
         });
