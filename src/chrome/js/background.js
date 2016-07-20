@@ -1,5 +1,7 @@
 import queue from "async/queue";
 
+let notificationId;
+
 const requestQueue = queue((task, callback) => {
   callback();
 });
