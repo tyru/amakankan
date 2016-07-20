@@ -160,7 +160,7 @@ const onExtensionButtonClickedAtUnknownPage = (tab) => {
 };
 
 chrome.runtime.onMessage.addListener((message) => {
-  requestQueue.push(() => {
+  requestQueue.push({}, () => {
     sendPageUrl(message);
   });
 });
