@@ -16,6 +16,7 @@
     "lint": "eslint src",
     "pack": "npm run build && npm run pack:crx",
     "pack:crx": "crx pack dist/chrome -o dist/chrome/amakankan.crx && rm dist/chrome/key.pem",
+    "pack:zip": "zip dist/chrome/amakankan.zip dist/chrome -r",
     "test": "npm run lint && npm run pack",
     "watch": "npm run build && npm run watch:cp & npm run watch:amazon & npm run watch:booklog & npm run watch:booklog",
     "watch:amazon": "watchify src/chrome/js/content-script-amazon.js -t babelify -o dist/chrome/js/content-script-amazon.js -v",
