@@ -1,23 +1,8 @@
-let nextPageUrl = null;
-let notificationId = null;
-let Q = [];
-Q.workingCount = 0;
-Q.finishedCount = 0;
-Q.execShift = () => {
-  const action = Q.shift();
-  Q.workingCount++;
-  action().then(() => {
-    Q.workingCount--;
-    Q.finishedCount++;
-    Q.execShift();
-  }).catch((e) => {
-    Q.finishedCount++;
-    Q.workingCount--;
-  });
-};
-Q.start = () => {
-  Q.execShift();
-};
+import queue from "async/queue";
+
+const requestQueue = queue((task, callback) => {
+  callback();
+});
 
 const notify = (options) => {
   return new Promise((done) => {
@@ -40,15 +25,27 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
       method: "POST",
     }
   ).then((response) => {
-    chrome.notifications.update(
-      notificationId,
-      {
-        title,
-        iconUrl: imageUrl,
-        message: "登録成功(" + (Q.finishedCount + 1) + "/" + (Q.length + Q.finishedCount + 1) + ")",
-        priority: 0,
-      }
-    );
+    if (chrome.notifications.update) {
+      chrome.notifications.update(
+        notificationId,
+        {
+          title,
+          iconUrl: imageUrl,
+          message: "申請完了",
+          priority: 0,
+        }
+      );
+    } else {
+      chrome.notifications.clear(notificationId, () => {
+        chrome.notifications.create({
+          title,
+          iconUrl: imageUrl,
+          message: "申請完了",
+          priority: 0,
+          type: "basic",
+        });
+      });
+    }
     done();
   });
 });
@@ -123,7 +120,6 @@ const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
     iconUrl: "images/icon-38.png",
     message: "登録中...",
     priority: 1,
-    requireInteraction: true,
     title: "開始",
     type: "basic",
   }).then((notifyId) => {
@@ -142,7 +138,6 @@ const onExtensionButtonClickedAtBooklogShelfPage = (tab) => {
     iconUrl: "images/icon-38.png",
     message: "登録中...",
     priority: 1,
-    requireInteraction: true,
     title: "開始",
     type: "basic",
   }).then((notifyId) => {
@@ -162,9 +157,10 @@ const onExtensionButtonClickedAtUnknownPage = (tab) => {
   });
 };
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  Q.push(() => sendPageUrl(request));
-  if (Q.length > 0 && Q.workingCount <= 2) Q.start();
+chrome.runtime.onMessage.addListener((message) => {
+  requestQueue.push(() => {
+    sendPageUrl(message);
+  });
 });
 
 chrome.browserAction.onClicked.addListener((tab) => {

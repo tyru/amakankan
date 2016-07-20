@@ -15,7 +15,7 @@ const processPage = (json) => {
     const imageUrl = book.image;
     const readAt = book.read_at;
     window.setTimeout(() => {
-      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl, readAt});
+      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl, readAt}, {});
     }, 200 * index);
   });
 
