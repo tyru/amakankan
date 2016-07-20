@@ -39,7 +39,7 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
       );
     } else {
       chrome.notifications.clear(notificationId, () => {
-        notificationId = chrome.notifications.create({
+        chrome.notifications.create({
           title,
           iconUrl: imageUrl,
           message: "送信完了",
