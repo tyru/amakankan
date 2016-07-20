@@ -34,5 +34,8 @@
     "object-assign": "^4.1.0",
     "watch": "^0.19.1",
     "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "async": "^2.0.0"
   }
 }

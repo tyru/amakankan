@@ -1,23 +1,8 @@
-let nextPageUrl = null;
-let notificationId = null;
-let Q = [];
-Q.workingCount = 0;
-Q.finishedCount = 0;
-Q.execShift = () => {
-  const action = Q.shift();
-  Q.workingCount++;
-  action().then(() => {
-    Q.workingCount--;
-    Q.finishedCount++;
-    Q.execShift();
-  }).catch((e) => {
-    Q.finishedCount++;
-    Q.workingCount--;
-  });
-};
-Q.start = () => {
-  Q.execShift();
-};
+import queue from "async/queue";
+
+const requestQueue = queue((task, callback) => {
+  callback();
+});
 
 const notify = (options) => {
   return new Promise((done) => {
@@ -172,9 +157,10 @@ const onExtensionButtonClickedAtUnknownPage = (tab) => {
   });
 };
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  Q.push(() => sendPageUrl(request));
-  if (Q.length > 0 && Q.workingCount <= 2) Q.start();
+chrome.runtime.onMessage.addListener((message) => {
+  requestQueue.push(() => {
+    sendPageUrl(message);
+  });
 });
 
 chrome.browserAction.onClicked.addListener((tab) => {
