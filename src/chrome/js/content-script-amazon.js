@@ -27,7 +27,7 @@ const scrapingPage = (html) => {
     const title = link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1");
     const imageUrl = item.parentNode.querySelector("img").src;
     window.setTimeout(() => {
-      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl});
+      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl}, {});
     }, 200 * index);
   });
   // まとめ買い対策
