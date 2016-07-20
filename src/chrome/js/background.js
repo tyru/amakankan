@@ -123,7 +123,6 @@ const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
     iconUrl: "images/icon-38.png",
     message: "登録中...",
     priority: 1,
-    requireInteraction: true,
     title: "開始",
     type: "basic",
   }).then((notifyId) => {
@@ -142,7 +141,6 @@ const onExtensionButtonClickedAtBooklogShelfPage = (tab) => {
     iconUrl: "images/icon-38.png",
     message: "登録中...",
     priority: 1,
-    requireInteraction: true,
     title: "開始",
     type: "basic",
   }).then((notifyId) => {
