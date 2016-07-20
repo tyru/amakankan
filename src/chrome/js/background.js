@@ -40,15 +40,27 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
       method: "POST",
     }
   ).then((response) => {
-    chrome.notifications.update(
-      notificationId,
-      {
-        title,
-        iconUrl: imageUrl,
-        message: "登録成功(" + (Q.finishedCount + 1) + "/" + (Q.length + Q.finishedCount + 1) + ")",
-        priority: 0,
-      }
-    );
+    if (chrome.notifications.update) {
+      chrome.notifications.update(
+        notificationId,
+        {
+          title,
+          iconUrl: imageUrl,
+          message: "申請完了",
+          priority: 0,
+        }
+      );
+    } else {
+      chrome.notifications.clear(notificationId, () => {
+        chrome.notifications.create({
+          title,
+          iconUrl: imageUrl,
+          message: "申請完了",
+          priority: 0,
+          type: "basic",
+        });
+      });
+    }
     done();
   });
 });
