@@ -1,3 +1,7 @@
+## 0.4.0
+- Support Firefox
+- Change text message on import notifications
+
 ## 0.3.0
 - Support booklog
 
