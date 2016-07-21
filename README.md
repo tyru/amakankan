@@ -31,3 +31,37 @@ Amazonの商品ページでボタンを押すと、amakanの対応する書籍�
 ### amakanに移動
 
 上記以外のページでボタンを押すと、[amakan.net](https://amakan.net) を開きます。
+
+## For developers
+
+### Set up
+
+Install dependencies for development (Requires node >= 6.1.0).
+
+```sh
+npm install
+```
+
+### Build
+
+Compile source files into ./dist directory.
+
+```sh
+npm run build
+```
+
+### Watch
+
+Watch source files to be built.
+
+```
+npm run watch
+```
+
+### Pack
+
+Create browser extension packages.
+
+```
+npm run pack
+```
