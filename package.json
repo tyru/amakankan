@@ -1,9 +1,24 @@
 {
   "name": "amakankan",
-  "private": true,
+  "dependencies": {
+    "async": "^2.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-3": "^6.11.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "eslint": "^3.1.1",
+    "fixpack": "^2.3.1",
+    "object-assign": "^4.1.0",
+    "watch": "^0.19.1",
+    "watchify": "^3.7.0"
+  },
   "engines": {
     "node": ">=0.8.0"
   },
+  "private": true,
   "scripts": {
     "build": "npm run build:rm && npm run build:mkdir && npm run build:cp && npm run build:js",
     "build:cp": "cp src/chrome/manifest.json dist/chrome/manifest.json && cp src/chrome/images/* dist/chrome/images",
@@ -13,7 +28,9 @@
     "build:js:booklog": "browserify src/chrome/js/content-script-booklog.js -t babelify -o dist/chrome/js/content-script-booklog.js",
     "build:mkdir": "mkdir -p dist/chrome/js && mkdir -p dist/chrome/images",
     "build:rm": "rm -rf dist/chrome/* || 0",
-    "lint": "eslint src",
+    "lint": "npm run lint:eslint && npm run lint:fixpack",
+    "lint:eslint": "eslint src",
+    "lint:fixpack": "fixpack | grep 'already clean'",
     "pack": "npm run build && npm run pack:zip",
     "pack:zip": "cd dist/chrome && zip -r amakankan.zip images js manifest.json",
     "test": "npm run lint && npm run pack",
@@ -22,19 +39,5 @@
     "watch:background": "watchify src/chrome/js/background.js -t babelify -o dist/chrome/js/background.js -v",
     "watch:booklog": "watchify src/chrome/js/content-script-booklog.js -t babelify -o dist/chrome/js/content-script-booklog.js -v",
     "watch:cp": "watch 'npm run build:cp' src/chrome/images src/chrome/manifest.json"
-  },
-  "devDependencies": {
-    "babel-core": "^6.10.4",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-stage-3": "^6.11.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.0.1",
-    "eslint": "^3.1.1",
-    "object-assign": "^4.1.0",
-    "watch": "^0.19.1",
-    "watchify": "^3.7.0"
-  },
-  "dependencies": {
-    "async": "^2.0.0"
   }
 }
