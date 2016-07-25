@@ -41,11 +41,12 @@ const scrapingPage = (html) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "scrapeAmazonOrderHistory") {
     _.range(new Date().getFullYear(), 1996, -1).forEach((year) => {
-      const pathNamePart = "/gp/your-account/order-history/ref=oh_aui_pagination_1_";
       const request = (i) => {
-        const url = pathNamePart + (i + 1) + "?startIndex=" + (i * 10) + "&orderFilter=year-" + year;
-        fetchPage(url)
-          .then((a) => scrapingPage(a) && window.setTimeout(() => request(++i), 100));
+        fetchPage(
+          `/gp/your-account/order-history/ref=oh_aui_pagination_1_${(i + 1)}?startIndex=${(i * 10)}&orderFilter=year-${year}`
+        ).then((a) => {
+          scrapingPage(a) && window.setTimeout(() => request(++i), 100);
+        });
       };
       request(0);
     });
