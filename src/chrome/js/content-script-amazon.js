@@ -1,10 +1,17 @@
 import _ from "underscore";
 
-const fetchPage = (url) => new Promise((ok) => {
-  return window.fetch(url, {credentials: "include"})
-    .then((res) => res.text())
-    .then(ok);
-});
+/**
+ * @param {String} url
+ * @returns {Promise}
+ */
+const fetchPage = (url) => {
+  return window.fetch(
+    url,
+    { credentials: "include" }
+  ).then((response) => {
+    return response.text();
+  });
+};
 
 const parseOrderSummry = (html) => {
   const targetDoc = document.createElement("html");
