@@ -22,7 +22,7 @@ const parseOrderSummry = (html) => {
     });
 };
 
-const scrapingPage = (html) => {
+const scrapePage = (html) => {
   const targetDoc = document.createElement("html");
   targetDoc.innerHTML = html;
   const items = [...targetDoc.querySelectorAll(".order > .a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right")];
@@ -45,16 +45,41 @@ const scrapingPage = (html) => {
   return true;
 };
 
+/**
+ * @returns {Array.<Integer>} e.g. `[1998, 1997, 1996]`
+ */
+const getCrawlableYears = () => {
+  return _.range(new Date().getFullYear(), 1996, -1);
+};
+
+/**
+ * @param {Integer} page
+ * @param {Integer} year
+ * @returns {Promise}
+ */
+const getOrderHistoryPage = ({ page, year }) => {
+  return fetchPage(`/gp/your-account/order-history/ref=oh_aui_pagination_1_${page}?startIndex=${((page - 1) * 10)}&orderFilter=year-${year}`);
+};
+
+/**
+ * @param {Integer} year
+ */
+const crawlAllPagesInYear = (year) => {
+  const request = (page) => {
+    getOrderHistoryPage({ page, year }).then((body) => {
+      return scrapePage(body);
+    }).then((hasNextPage) => {
+      if (hasNextPage) {
+        window.setTimeout(() => request(page + 1), 100);
+      }
+    });
+  };
+  request(1);
+};
+
 const scrapeAmazonOrderHistory = () => {
-  _.range(new Date().getFullYear(), 1996, -1).forEach((year) => {
-    const request = (page) => {
-      fetchPage(
-        `/gp/your-account/order-history/ref=oh_aui_pagination_1_${page}?startIndex=${((page - 1) * 10)}&orderFilter=year-${year}`
-      ).then((a) => {
-        scrapingPage(a) && window.setTimeout(() => request(page + 1), 100);
-      });
-    };
-    request(1);
+  getCrawlableYears().forEach((year) => {
+    crawlAllPagesInYear(year);
   });
 };
 
