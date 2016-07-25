@@ -45,18 +45,22 @@ const scrapingPage = (html) => {
   return true;
 };
 
+const scrapeAmazonOrderHistory = () => {
+  _.range(new Date().getFullYear(), 1996, -1).forEach((year) => {
+    const request = (i) => {
+      fetchPage(
+        `/gp/your-account/order-history/ref=oh_aui_pagination_1_${(i + 1)}?startIndex=${(i * 10)}&orderFilter=year-${year}`
+      ).then((a) => {
+        scrapingPage(a) && window.setTimeout(() => request(++i), 100);
+      });
+    };
+    request(0);
+  });
+};
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "scrapeAmazonOrderHistory") {
-    _.range(new Date().getFullYear(), 1996, -1).forEach((year) => {
-      const request = (i) => {
-        fetchPage(
-          `/gp/your-account/order-history/ref=oh_aui_pagination_1_${(i + 1)}?startIndex=${(i * 10)}&orderFilter=year-${year}`
-        ).then((a) => {
-          scrapingPage(a) && window.setTimeout(() => request(++i), 100);
-        });
-      };
-      request(0);
-    });
+    scrapeAmazonOrderHistory();
   }
   return true;
 });
