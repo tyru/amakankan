@@ -1,6 +1,16 @@
 import _ from "underscore";
 
 /**
+ * @param {String} imageUrl
+ * @param {String=} readAt
+ * @param {String} title
+ * @param {String} url
+ */
+const sendAmazonProductDataToAmakan = ({ imageUrl, readAt, title, url }) => {
+  chrome.runtime.sendMessage(chrome.runtime.id, { imageUrl, readAt, title, url }, {});
+};
+
+/**
  * @param {String} url
  * @returns {Promise}
  */
@@ -18,10 +28,18 @@ const parseOrderSummry = (html) => {
   targetDoc.innerHTML = html;
   [...targetDoc.querySelectorAll(".sample b > a")]
     .forEach((a) => {
-      chrome.runtime.sendMessage(chrome.runtime.id, {url: a.href, title: a.textContent, imageUrl: null});
+      sendAmazonProductDataToAmakan({
+        imageUrl: null,
+        title: a.textContent,
+        url: a.href,
+      });
     });
 };
 
+/**
+ * @param {String} html
+ * @returns {Boolean} A flag to tell there is a next page or not.
+ */
 const scrapePage = (html) => {
   const targetDoc = document.createElement("html");
   targetDoc.innerHTML = html;
@@ -34,11 +52,12 @@ const scrapePage = (html) => {
     if (!link) {
       return;
     }
-    const url = link.href;
-    const title = link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1");
-    const imageUrl = item.parentNode.querySelector("img").src;
     window.setTimeout(() => {
-      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl}, {});
+      sendAmazonProductDataToAmakan({
+        imageUrl: item.parentNode.querySelector("img").src,
+        title: link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1"),
+        url: link.href,
+      });
     }, 200 * index);
   });
   // まとめ買い対策
