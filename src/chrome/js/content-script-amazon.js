@@ -59,14 +59,12 @@ const scrapePage = (html) => {
       if (!link) {
         return;
       }
-      window.setTimeout(() => {
-        sendAmazonProductDataToAmakan({
-          imageUrl: item.parentNode.querySelector("img").src,
-          title: link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1"),
-          readAt: momentTime.format("YYYY-MM-DD 00:00:00"),
-          url: link.href,
-        });
-      }, 200 * index);
+      sendAmazonProductDataToAmakan({
+        imageUrl: item.parentNode.querySelector("img").src,
+        title: link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1"),
+        readAt: momentTime.format("YYYY-MM-DD 00:00:00"),
+        url: link.href,
+      });
     });
     // まとめ買い対策
     [...targetDoc.querySelectorAll(".a-size-medium.a-link-emphasis")]
