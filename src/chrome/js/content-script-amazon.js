@@ -1,4 +1,5 @@
 import _ from "underscore";
+import moment from "moment";
 
 /**
  * @param {String} imageUrl
@@ -43,27 +44,35 @@ const parseOrderSummry = (html) => {
 const scrapePage = (html) => {
   const targetDoc = document.createElement("html");
   targetDoc.innerHTML = html;
-  const items = [...targetDoc.querySelectorAll(".order > .a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right")];
-  if (items.length < 1) {
-    return false;
-  }
-  items.forEach((item, index) => {
-    const link = item.querySelector(".a-link-normal");
-    if (!link) {
-      return;
+  targetDoc.querySelectorAll(".order").forEach((orderElement) => {
+    const momentTime = moment(
+      orderElement.querySelector(".order-info .a-column:first-child .value").textContent.replace(/^\s+/, "").replace(/\s+$/, ""),
+      "YYYY年M月D日"
+    );
+
+    const items = orderElement.querySelectorAll(".a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right");
+    if (items.length < 1) {
+      return false;
     }
-    window.setTimeout(() => {
-      sendAmazonProductDataToAmakan({
-        imageUrl: item.parentNode.querySelector("img").src,
-        title: link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1"),
-        url: link.href,
-      });
-    }, 200 * index);
+    items.forEach((item, index) => {
+      const link = item.querySelector(".a-link-normal");
+      if (!link) {
+        return;
+      }
+      window.setTimeout(() => {
+        sendAmazonProductDataToAmakan({
+          imageUrl: item.parentNode.querySelector("img").src,
+          title: link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1"),
+          readAt: momentTime.format("YYYY-MM-DD 00:00:00"),
+          url: link.href,
+        });
+      }, 200 * index);
+    });
+    // まとめ買い対策
+    [...targetDoc.querySelectorAll(".a-size-medium.a-link-emphasis")]
+      .forEach((a) => fetchPage(a.href).then(parseOrderSummry));
+    return true;
   });
-  // まとめ買い対策
-  [...targetDoc.querySelectorAll(".a-size-medium.a-link-emphasis")]
-    .forEach((a) => fetchPage(a.href).then(parseOrderSummry));
-  return true;
 };
 
 /**

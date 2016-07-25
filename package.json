@@ -1,7 +1,8 @@
 {
   "name": "amakankan",
   "dependencies": {
-    "async": "^2.0.0"
+    "async": "^2.0.0",
+    "moment": "^2.14.1"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
