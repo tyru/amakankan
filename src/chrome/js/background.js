@@ -129,7 +129,7 @@ const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
     chrome.tabs.sendMessage(
       tab.id,
       {
-        action: "scrapingAllAmazonHistory"
+        action: "scrapeAmazonOrderHistory"
       }
     );
   });

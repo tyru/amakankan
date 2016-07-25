@@ -38,7 +38,7 @@ const scrapingPage = (html) => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const actions = {
-    scrapingAllAmazonHistory: () => {
+    scrapeAmazonOrderHistory: () => {
       for(let year = (new Date()).getFullYear(); year >= 1996; year--) {
         const pathNamePart = "/gp/your-account/order-history/ref=oh_aui_pagination_1_";
         const request = (i) => {
