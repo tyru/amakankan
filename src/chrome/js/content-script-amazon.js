@@ -26,7 +26,9 @@ const scrapePage = (html) => {
   const targetDoc = document.createElement("html");
   targetDoc.innerHTML = html;
   const items = [...targetDoc.querySelectorAll(".order > .a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right")];
-  if (items.length < 1) return false;
+  if (items.length < 1) {
+    return false;
+  }
   items.forEach((item, index) => {
     const link = item.querySelector(".a-link-normal");
     if (!link) {
