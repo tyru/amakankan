@@ -47,14 +47,14 @@ const scrapingPage = (html) => {
 
 const scrapeAmazonOrderHistory = () => {
   _.range(new Date().getFullYear(), 1996, -1).forEach((year) => {
-    const request = (i) => {
+    const request = (page) => {
       fetchPage(
-        `/gp/your-account/order-history/ref=oh_aui_pagination_1_${(i + 1)}?startIndex=${(i * 10)}&orderFilter=year-${year}`
+        `/gp/your-account/order-history/ref=oh_aui_pagination_1_${page}?startIndex=${((page - 1) * 10)}&orderFilter=year-${year}`
       ).then((a) => {
-        scrapingPage(a) && window.setTimeout(() => request(++i), 100);
+        scrapingPage(a) && window.setTimeout(() => request(page + 1), 100);
       });
     };
-    request(0);
+    request(1);
   });
 };
 
