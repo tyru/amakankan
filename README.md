@@ -8,9 +8,9 @@ amakankanは、[amakan.net](https://amakan.net) のための公式ブラウザ�
 
 [amakankan - Chromeウェブストア](https://chrome.google.com/webstore/detail/amakankan/cbbcooiceghdbkklnkdahccnbbfleoll)
 
-### Firefox
+### Firefox, Opera, Edge
 
-[amakankan :: Add-ons for Firefox](https://addons.mozilla.org/ja/firefox/addon/amakankan/)
+登録申請中 :bow:
 
 ## 使い方
 
