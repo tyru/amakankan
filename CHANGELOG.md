@@ -1,3 +1,6 @@
+## 0.5.0
+- Support correct readAt on Amazon and Booklog
+
 ## 0.4.0
 - Support Firefox
 - Change text message on import notifications
