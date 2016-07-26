@@ -27,14 +27,24 @@ const fetchPage = (url) => {
 const parseOrderSummry = (html) => {
   const targetDoc = document.createElement("html");
   targetDoc.innerHTML = html;
-  [...targetDoc.querySelectorAll(".sample b > a")]
-    .forEach((a) => {
+  let readAt;
+  const dateElement = targetDoc.querySelector(".orderSummary .narrowed tr:first-child td:nth-child(2) > b");
+  if (dateElement) {
+    readAt = moment(
+      dateElement.textContent.replace(/^\s+/, "").replace(/\s+$/, "").replace("デジタル注文: ", ""),
+      "YYYY/M/D"
+    ).format("YYYY-MM-DD 00:00:00");
+  }
+  targetDoc.querySelectorAll(".sample b > a").forEach((a, index) => {
+    window.setTimeout(() => {
       sendAmazonProductDataToAmakan({
+        readAt,
         imageUrl: null,
         title: a.textContent,
         url: a.href,
       });
-    });
+    }, index * 200);
+  });
 };
 
 /**
@@ -44,33 +54,33 @@ const parseOrderSummry = (html) => {
 const scrapePage = (html) => {
   const targetDoc = document.createElement("html");
   targetDoc.innerHTML = html;
-  targetDoc.querySelectorAll(".order").forEach((orderElement) => {
+  const orderElements = targetDoc.querySelectorAll(".order");
+  orderElements.forEach((orderElement) => {
     const momentTime = moment(
       orderElement.querySelector(".order-info .a-column:first-child .value").textContent.replace(/^\s+/, "").replace(/\s+$/, ""),
       "YYYY年M月D日"
     );
-
     const items = orderElement.querySelectorAll(".a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right");
-    if (items.length < 1) {
-      return false;
-    }
     items.forEach((item, index) => {
       const link = item.querySelector(".a-link-normal");
       if (!link) {
         return;
       }
-      sendAmazonProductDataToAmakan({
-        imageUrl: item.parentNode.querySelector("img").src,
-        title: link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1"),
-        readAt: momentTime.format("YYYY-MM-DD 00:00:00"),
-        url: link.href,
-      });
+      window.setTimeout(() => {
+        sendAmazonProductDataToAmakan({
+          imageUrl: item.parentNode.querySelector("img").src,
+          title: link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, "$1"),
+          readAt: momentTime.format("YYYY-MM-DD 00:00:00"),
+          url: link.href,
+        });
+      }, index * 200);
     });
     // まとめ買い対策
-    [...targetDoc.querySelectorAll(".a-size-medium.a-link-emphasis")]
-      .forEach((a) => fetchPage(a.href).then(parseOrderSummry));
-    return true;
+    orderElement.querySelectorAll(".a-size-medium.a-link-emphasis").forEach((a) => {
+      fetchPage(a.href).then(parseOrderSummry);
+    });
   });
+  return orderElements.length >= 1;
 };
 
 /**
