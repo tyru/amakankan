@@ -47,6 +47,16 @@
       ],
       "run_at": "document_end",
       "all_frames": false
+    },
+    {
+      "matches": [
+        "http://bookmeter.com/*"
+      ],
+      "js": [
+        "js/content-script-bookmeter.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
     }
   ],
   "browser_action": {

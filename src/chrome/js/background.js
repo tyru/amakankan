@@ -52,6 +52,28 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
   });
 });
 
+/**
+ * @param {String} actionName
+ * @param {Object} tab
+ */
+const startScrapeInContentScript = ({ actionName, tab }) => {
+  notify({
+    iconUrl: "images/icon-38.png",
+    message: "登録中...",
+    priority: 1,
+    title: "開始",
+    type: "basic",
+  }).then((notifyId) => {
+    notificationId = notifyId;
+    chrome.tabs.sendMessage(
+      tab.id,
+      {
+        action: actionName,
+      }
+    );
+  });
+}
+
 class UrlDetection {
   /**
    * @param {String} url
@@ -92,6 +114,27 @@ class UrlDetection {
   /**
    * @return {Boolean}
    */
+  hasBookmeterHomeUrl() {
+    return this.hasBookmeterHostname() && this.hasBookmeterHomePathname();
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBookmeterHostname() {
+    return /bookmeter\.com$/.test(this.element.hostname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBookmeterHomePathname() {
+    return /^\/home$/.test(this.element.pathname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
   hasBooklogHostname() {
     return /booklog\.jp$/.test(this.element.hostname);
   }
@@ -111,52 +154,24 @@ class UrlDetection {
   }
 }
 
-const onExtensionButtonClickedAtAmazonProductPage = (tab) => {
-  chrome.tabs.create({
-    url: `https://amakan.net/search?query=${tab.url}`
-  });
+const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
+  startScrapeInContentScript({ actionName: "scrapeAmazonOrderHistory", tab });
 };
 
-const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
-  notify({
-    iconUrl: "images/icon-38.png",
-    message: "登録中...",
-    priority: 1,
-    title: "開始",
-    type: "basic",
-  }).then((notifyId) => {
-    notificationId = notifyId;
-    chrome.tabs.sendMessage(
-      tab.id,
-      {
-        action: "scrapeAmazonOrderHistory"
-      }
-    );
-  });
+const onExtensionButtonClickedAtAmazonProductPage = (tab) => {
+  chrome.tabs.create({ url: `https://amakan.net/search?query=${tab.url}` });
 };
 
 const onExtensionButtonClickedAtBooklogShelfPage = (tab) => {
-  notify({
-    iconUrl: "images/icon-38.png",
-    message: "登録中...",
-    priority: 1,
-    title: "開始",
-    type: "basic",
-  }).then((notifyId) => {
-    notificationId = notifyId;
-    chrome.tabs.sendMessage(
-      tab.id,
-      {
-        action: "scrapeAllBooklogReadHistory"
-      }
-    );
-  });
+  startScrapeInContentScript({ actionName: "scrapeAllBooklogReadHistory", tab });
+};
+
+const onExtensionButtonClickedAtBookmeterHomePage = (tab) => {
+  startScrapeInContentScript({ actionName: "scrapeAllBookmeterReadHistory", tab });
 };
 
 const onExtensionButtonClickedAtUnknownPage = (tab) => {
-  chrome.tabs.create({
-    url: "https://amakan.net"
-  });
+  chrome.tabs.create({ url: "https://amakan.net" });
 };
 
 chrome.runtime.onMessage.addListener((message) => {
@@ -173,6 +188,8 @@ chrome.browserAction.onClicked.addListener((tab) => {
     onExtensionButtonClickedAtAmazonProductPage(tab);
   } else if (detection.hasBooklogShelfUrl()) {
     onExtensionButtonClickedAtBooklogShelfPage(tab);
+  } else if (detection.hasBookmeterHomeUrl()) {
+    onExtensionButtonClickedAtBookmeterHomePage(tab);
   } else {
     onExtensionButtonClickedAtUnknownPage(tab);
   }
