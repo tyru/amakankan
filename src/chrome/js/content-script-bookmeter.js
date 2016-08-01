@@ -34,7 +34,7 @@ const getReadBooks = ({ page }) => {
         console.log(1);
         const titleElement = boxElement.querySelector(".book_list_simple_td_title a");
         const title = titleElement.textContent.replace(/^\s+/, "").replace(/\s+$/, "");
-        const asin = titleElement.href.replace("/b/", "");
+        const asin = titleElement.href.match(/\/b\/(.+)/)[1];
         const url = `https://www.amazon.co.jp/dp/${asin}`;
         const dateElement = boxElement.querySelector(".book_list_simple_td_date");
         const readAt = moment(
