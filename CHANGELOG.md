@@ -1,3 +1,7 @@
+## 0.6.0
+- Support bookmeter import
+- Fix manifest.json bug on Firefox
+
 ## 0.5.0
 - Support correct readAt on Amazon and Booklog
 
