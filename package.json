@@ -30,7 +30,7 @@
     "build:js:booklog": "browserify src/chrome/js/content-script-booklog.js -t babelify -o dist/chrome/js/content-script-booklog.js",
     "build:js:bookmeter": "browserify src/chrome/js/content-script-bookmeter.js -t babelify -o dist/chrome/js/content-script-bookmeter.js",
     "build:mkdir": "mkdir -p dist/chrome/js && mkdir -p dist/chrome/images",
-    "build:rm": "rm -rf dist/chrome/* || 0",
+    "build:rm": "rm -rf dist/* || 0",
     "lint": "npm run lint:eslint && npm run lint:fixpack",
     "lint:eslint": "eslint src",
     "lint:fixpack": "fixpack | grep 'already clean'",
