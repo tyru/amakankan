@@ -72,7 +72,7 @@ const startScrapeInContentScript = ({ actionName, tab }) => {
       }
     );
   });
-}
+};
 
 class UrlDetection {
   /**
