@@ -31,7 +31,6 @@ const getReadBooks = ({ page }) => {
       const rootElement = document.createElement("html");
       rootElement.innerHTML = body;
       return [...rootElement.querySelectorAll("#status_box .book_list_simple_box:not(:first-child)")].map((boxElement) => {
-        console.log(1);
         const titleElement = boxElement.querySelector(".book_list_simple_td_title a");
         const title = titleElement.textContent.replace(/^\s+/, "").replace(/\s+$/, "");
         const asin = titleElement.href.match(/\/b\/(.+)/)[1];
@@ -39,7 +38,7 @@ const getReadBooks = ({ page }) => {
         const dateElement = boxElement.querySelector(".book_list_simple_td_date");
         const readAt = moment(
           dateElement.textContent.replace(/^\s+/, "").replace(/\s+$/, ""),
-          "YYYY年MM月DD日",
+          "YYYY年MM月DD日"
         ).format("YYYY-MM-DD 00:00:00");
         return {
           readAt,
@@ -51,7 +50,7 @@ const getReadBooks = ({ page }) => {
       return [];
     }
   });
-}
+};
 
 /**
  * @param {Integer=} page
