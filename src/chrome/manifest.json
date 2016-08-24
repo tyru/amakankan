@@ -57,6 +57,16 @@
       ],
       "run_at": "document_end",
       "all_frames": false
+    },
+    {
+      "matches": [
+        "https://log.tsutaya.co.jp/*"
+      ],
+      "js": [
+        "js/content-script-tsutaya-log.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
     }
   ],
   "browser_action": {

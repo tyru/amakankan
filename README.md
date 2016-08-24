@@ -32,6 +32,10 @@ Amazonの商品ページでボタンを押すと、amakanの対応する書籍�
 
 [読書メーター](http://bookmeter.com/) の読んだ本のページでボタンを押すと、読んだ本をamakanに一括登録できます。
 
+### TSUTAYA LOG の履歴ストックからインポート
+
+[TSUTAYA LOG](https://log.tsutaya.co.jp/) の履歴ストックページでボタンを押すと、読んだ本をamakanに一括登録できます。
+
 ### amakanに移動
 
 上記以外のページでボタンを押すと、[amakan.net](https://amakan.net) を開きます。

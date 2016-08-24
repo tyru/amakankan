@@ -152,6 +152,27 @@ class UrlDetection {
   hasBooklogShelfUrl() {
     return this.hasBooklogHostname() && this.hasBooklogShelfPathname();
   }
+
+  /**
+   * @return {Boolean}
+   */
+  hasTsutayaLogStockHistoryUrl() {
+    return this.hasTsutayaLogStockHostname() && this.hasTsutayaLogStockHistoryPathname();
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasTsutayaLogStockHostname() {
+    return /log\.tsutaya\.co\.jp/.test(this.element.hostname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasTsutayaLogStockHistoryPathname() {
+    return /^\/pc\/[^/]+Action.do$/.test(this.element.pathname);
+  }
 }
 
 const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
@@ -168,6 +189,10 @@ const onExtensionButtonClickedAtBooklogShelfPage = (tab) => {
 
 const onExtensionButtonClickedAtBookmeterHomePage = (tab) => {
   startScrapeInContentScript({ actionName: "scrapeAllBookmeterReadHistory", tab });
+};
+
+const onExtensionButtonClickedAtTsutayaLogPage = (tab) => {
+  startScrapeInContentScript({ actionName: "scrapeAllTsutayaLogStockHistory", tab });
 };
 
 const onExtensionButtonClickedAtUnknownPage = (tab) => {
@@ -190,6 +215,8 @@ chrome.browserAction.onClicked.addListener((tab) => {
     onExtensionButtonClickedAtBooklogShelfPage(tab);
   } else if (detection.hasBookmeterHomeUrl()) {
     onExtensionButtonClickedAtBookmeterHomePage(tab);
+  } else if (detection.hasTsutayaLogStockHistoryUrl()) {
+    onExtensionButtonClickedAtTsutayaLogPage(tab);
   } else {
     onExtensionButtonClickedAtUnknownPage(tab);
   }
