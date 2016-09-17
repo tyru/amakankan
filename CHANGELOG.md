@@ -1,3 +1,6 @@
+## 0.7.0
+- Support TSUTAYA LOG
+
 ## 0.6.0
 - Support bookmeter import
 - Fix manifest.json bug on Firefox
