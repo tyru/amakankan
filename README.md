@@ -6,7 +6,7 @@ amakankanは、[amakan.net](https://amakan.net) のための公式ブラウザ�
 
 ### Google Chrome
 
-[amakankan - Chromeウェブストア](https://chrome.google.com/webstore/detail/amakankan/cbbcooiceghdbkklnkdahccnbbfleoll)
+~~[amakankan - Chromeウェブストア](https://chrome.google.com/webstore/detail/amakankan/cbbcooiceghdbkklnkdahccnbbfleoll)~~ 登録取消のため再申請中
 
 ### Firefox, Opera, Edge
 
