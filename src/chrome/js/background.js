@@ -173,6 +173,27 @@ class UrlDetection {
   hasTsutayaLogStockHistoryPathname() {
     return /^\/pc\/[^/]+Action.do$/.test(this.element.pathname);
   }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBellAlertAlertListUrl() {
+    return this.hasBellAlertAlertListHostname() && this.hasBellAlertAlertListPathname();
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBellAlertAlertListHostname() {
+    return /alert\.shop-bell\.com/.test(this.element.hostname);
+  }
+
+  /**
+   * @return {Boolean}
+   */
+  hasBellAlertAlertListPathname() {
+    return /^\/users\/alert_list\/$/.test(this.element.pathname);
+  }
 }
 
 const onExtensionButtonClickedAtAmazonOrderHistoryPage = (tab) => {
@@ -193,6 +214,10 @@ const onExtensionButtonClickedAtBookmeterHomePage = (tab) => {
 
 const onExtensionButtonClickedAtTsutayaLogPage = (tab) => {
   startScrapeInContentScript({ actionName: "scrapeAllTsutayaLogStockHistory", tab });
+};
+
+const onExtensionButtonClickedAtBellAlertAlertListPage = (tab) => {
+  startScrapeInContentScript({ actionName: "scrapeAllBellAlertAlertList", tab });
 };
 
 const onExtensionButtonClickedAtUnknownPage = (tab) => {
@@ -217,6 +242,8 @@ chrome.browserAction.onClicked.addListener((tab) => {
     onExtensionButtonClickedAtBookmeterHomePage(tab);
   } else if (detection.hasTsutayaLogStockHistoryUrl()) {
     onExtensionButtonClickedAtTsutayaLogPage(tab);
+  } else if (detection.hasBellAlertAlertListUrl()) {
+    onExtensionButtonClickedAtBellAlertAlertListPage(tab);
   } else {
     onExtensionButtonClickedAtUnknownPage(tab);
   }
