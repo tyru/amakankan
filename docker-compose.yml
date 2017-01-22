@@ -1,0 +1,15 @@
+version: "2"
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    command: npm run watch
+    volumes:
+      - ./.babelrc:/app/.babelrc
+      - ./.eslintignore:/app/.eslintignore
+      - ./.eslintrc.json:/app/.eslintrc.json
+      - ./dist:/app/dist
+      - ./package.json:/app/package.json
+      - ./src:/app/src
+      - ./yarn.lock:/app/yarn.lock
