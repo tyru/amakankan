@@ -1,44 +1,37 @@
-# amakankan [![Build Status](https://travis-ci.org/amakan/amakankan.svg?branch=master)](https://travis-ci.org/amakan/amakankan)
+# amakankan
 
-amakankanは、[amakan.net](https://amakan.net) のための公式ブラウザ拡張です。
+[![Build Status](https://travis-ci.org/amakan/amakankan.svg?branch=master)](https://travis-ci.org/amakan/amakankan)
 
-## インストール
-
-### Google Chrome
-
-~~[amakankan - Chromeウェブストア](https://chrome.google.com/webstore/detail/amakankan/cbbcooiceghdbkklnkdahccnbbfleoll)~~ 登録取消のため再申請中
-
-### Firefox, Opera, Edge
-
-登録申請中 :bow:
-
-## 使い方
-
-### Amazonの注文履歴からインポート
-
-Amazonの [注文履歴ページ](https://www.amazon.co.jp/gp/css/order-history) でボタンを押すと、読んだ本をamakanに一括登録できます。
+[amakan.net](https://amakan.net) のためのブラウザ拡張。
 
 ![demo](/images/demo.gif)
 
-### Amazonの商品ページからamakanに移動
+## インストール方法
 
-Amazonの商品ページでボタンを押すと、amakanの対応する書籍のページを開きます。
+準備中
 
-### ブクログの本棚からインポート
+## 使い方
 
-[ブクログ](http://booklog.jp/) の本棚ページでボタンを押すと、読んだ本をamakanに一括登録できます。
+### Amazon
 
-### 読書メーターの読んだ本からインポート
+- Amazonの[注文履歴ページ](https://www.amazon.co.jp/gp/css/order-history)で拡張のボタンを押すと、読んだ本をamakanに一括登録できます
+- Amazonの商品ページで拡張のボタンを押すと、amakanの対応する書籍のページを開きます
 
-[読書メーター](http://bookmeter.com/) の読んだ本のページでボタンを押すと、読んだ本をamakanに一括登録できます。
+### ブクログ
 
-### TSUTAYA LOG の履歴ストックからインポート
+- [ブクログ](http://booklog.jp/)の本棚ページで拡張のボタンを押すと、読んだ本をamakanに一括登録できます
 
-[TSUTAYA LOG](https://log.tsutaya.co.jp/) の履歴ストックページでボタンを押すと、読んだ本をamakanに一括登録できます。
+### 読書メーター
 
-### amakanに移動
+- [読書メーター](http://bookmeter.com/)の読んだ本のページで拡張のボタンを押すと、読んだ本をamakanに一括登録できます
 
-上記以外のページでボタンを押すと、[amakan.net](https://amakan.net) を開きます。
+### TSUTAYA LOG
+
+- [TSUTAYA LOG](https://log.tsutaya.co.jp/)の履歴ストックページで拡張のボタンを押すと、読んだ本をamakanに一括登録できます
+
+### その他
+
+- 上記以外のページで拡張のボタンを押すと、https://amakan.net を開きます
 
 ## 開発者用ドキュメント
 
