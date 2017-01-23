@@ -40,36 +40,35 @@ Amazonの商品ページでボタンを押すと、amakanの対応する書籍�
 
 上記以外のページでボタンを押すと、[amakan.net](https://amakan.net) を開きます。
 
-## For developers
+## 開発者用ドキュメント
 
-### Set up
+### 準備
 
-Install dependencies for development (Requires node >= 6.1.0).
+このリポジトリは、Dockerを利用して開発することを想定しています。
+手元の環境でDockerを動かせるように準備を行ってください。
 
-```sh
-npm install
+https://docs.docker.com/
+
+### watch
+
+ファイルの変更を監視して継続的にビルドを行うには、以下のスクリプトを実行してください。
+
+```bash
+docker-compose up
 ```
 
-### Build
+### build
 
-Compile source files into ./dist directory.
+1度だけビルドを行うには、以下のスクリプトを実行してください。
 
-```sh
-npm run build
+```bash
+docker-compose run --rm node yarn run build
 ```
 
-### Watch
+### pack
 
-Watch source files to be built.
+拡張用のファイルを生成するには、以下のスクリプトを実行してください。
 
-```
-npm run watch
-```
-
-### Pack
-
-Create browser extension packages.
-
-```
-npm run pack
+```bash
+docker-compose run --rm node yarn run pack
 ```
