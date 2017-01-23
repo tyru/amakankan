@@ -1,4 +1,4 @@
-Copyright (c) 2016 amakan
+Copyright (c) 2016 Ryo Nakamura
 
 MIT License
 
