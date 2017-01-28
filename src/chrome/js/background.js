@@ -8,7 +8,20 @@ const requestQueue = queue((task, callback) => {
 
 const notify = (options) => {
   return new Promise((done) => {
-    chrome.notifications.create(options, done);
+    if (notificationId) {
+      if (chrome.notifications.update) {
+        chrome.notifications.update(notificationId, options, done);
+      } else {
+        chrome.notifications.clear(notificationId, () => {
+          chrome.notifications.create(options, done);
+        });
+      }
+    } else {
+      chrome.notifications.create(options, (notifyId) => {
+        notificationId = notifyId;
+        done();
+      });
+    }
   });
 };
 
@@ -27,27 +40,13 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
       method: "POST",
     }
   ).then((response) => {
-    if (chrome.notifications.update) {
-      chrome.notifications.update(
-        notificationId,
-        {
-          title,
-          iconUrl: imageUrl || "images/icon-38.png",
-          message: "送信完了",
-          priority: 0,
-        }
-      );
-    } else {
-      chrome.notifications.clear(notificationId, () => {
-        chrome.notifications.create({
-          title,
-          iconUrl: imageUrl || "images/icon-38.png",
-          message: "送信完了",
-          priority: 0,
-          type: "basic",
-        });
-      });
-    }
+    notify({
+      title,
+      iconUrl: imageUrl || "images/icon-38.png",
+      message: "送信完了",
+      priority: 0,
+      type: "basic",
+    });
     done();
   });
 });
@@ -64,7 +63,6 @@ const startScrapeInContentScript = ({ actionName, tab }) => {
     title: "開始",
     type: "basic",
   }).then((notifyId) => {
-    notificationId = notifyId;
     chrome.tabs.sendMessage(
       tab.id,
       {
@@ -246,5 +244,11 @@ chrome.browserAction.onClicked.addListener((tab) => {
     onExtensionButtonClickedAtBellAlertAlertListPage(tab);
   } else {
     onExtensionButtonClickedAtUnknownPage(tab);
+  }
+});
+
+chrome.notifications.onClosed.addListener((notifyId, byUser) => {
+  if (notificationId === notifyId) {
+    notificationId = undefined;
   }
 });
