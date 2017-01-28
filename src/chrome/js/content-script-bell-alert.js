@@ -172,9 +172,25 @@ const scrapeAllBellAlertAlertList = () => {
     });
 };
 
+const isLoggedIn = () => {
+  return fetchPage("/users/login/").then((content) => {
+    const $html = document.createElement("html");
+    $html.innerHTML = content;
+    return $html.querySelector("#UserLoginForm") ? Promise.reject() : Promise.resolve();
+  }, (error) => {
+    // Bell alert redirects to 'http://...' but chrome blocks due to mixed
+    // contents with no sufficient error information!
+    // (error.message = "Failed to fetch")
+    return Promise.resolve();
+  });
+};
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "scrapeAllBellAlertAlertList") {
-    scrapeAllBellAlertAlertList();
+    isLoggedIn().then(
+      () => scrapeAllBellAlertAlertList(),
+      () => window.alert("ログインして下さい")
+    );
   }
   return true;
 });
