@@ -176,7 +176,7 @@ class UrlDetection {
    * @return {Boolean}
    */
   hasBellAlertAlertListUrl() {
-    return this.hasBellAlertAlertListHostname() && this.hasBellAlertAlertListPathname();
+    return this.hasBellAlertAlertListHostname();
   }
 
   /**
@@ -184,13 +184,6 @@ class UrlDetection {
    */
   hasBellAlertAlertListHostname() {
     return /alert\.shop-bell\.com/.test(this.element.hostname);
-  }
-
-  /**
-   * @return {Boolean}
-   */
-  hasBellAlertAlertListPathname() {
-    return /^\/users\/alert_list\/$/.test(this.element.pathname);
   }
 }
 
