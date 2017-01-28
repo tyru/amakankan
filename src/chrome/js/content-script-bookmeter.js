@@ -1,6 +1,19 @@
 import moment from "moment";
 
 /**
+ * @param {String} imageUrl
+ * @param {String=} readAt
+ * @param {String} title
+ * @param {String} url
+ */
+const sendAmazonProductDataToAmakan = ({ imageUrl, readAt, title, url }) => {
+  chrome.runtime.sendMessage(chrome.runtime.id, {
+    action: "sendAmazonProductDataToAmakan",
+    imageUrl, readAt, title, url
+  }, {});
+};
+
+/**
  * @param {String} url
  * @returns {Promise}
  */
@@ -59,7 +72,7 @@ const crawl = (page = 1) => {
   getReadBooks({ page }).then((books) => {
     books.forEach((book, index) => {
       window.setTimeout(() => {
-        chrome.runtime.sendMessage(chrome.runtime.id, book, {});
+        sendAmazonProductDataToAmakan(book);
       }, 200 * index);
     });
     if (books.length > 0) {

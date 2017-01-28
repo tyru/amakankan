@@ -216,9 +216,16 @@ const onExtensionButtonClickedAtUnknownPage = (tab) => {
 };
 
 chrome.runtime.onMessage.addListener((message) => {
-  requestQueue.push({}, () => {
-    sendPageUrl(message);
-  });
+  switch (message.action) {
+  case "notify":
+    notify(message.options);
+    break;
+  case "sendAmazonProductDataToAmakan":
+    requestQueue.push({}, () => {
+      sendPageUrl(message);
+    });
+    break;
+  }
 });
 
 chrome.browserAction.onClicked.addListener((tab) => {

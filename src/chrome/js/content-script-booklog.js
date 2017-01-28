@@ -1,3 +1,16 @@
+/**
+ * @param {String} imageUrl
+ * @param {String=} readAt
+ * @param {String} title
+ * @param {String} url
+ */
+const sendAmazonProductDataToAmakan = ({ imageUrl, readAt, title, url }) => {
+  chrome.runtime.sendMessage(chrome.runtime.id, {
+    action: "sendAmazonProductDataToAmakan",
+    imageUrl, readAt, title, url
+  }, {});
+};
+
 const fetchJson = (url) => new Promise((ok) => {
   return window.fetch(url, {credentials: "include"})
     .then((res) => res.json())
@@ -15,7 +28,7 @@ const processPage = (json) => {
     const imageUrl = book.image;
     const readAt = book.read_at;
     window.setTimeout(() => {
-      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl, readAt}, {});
+      sendAmazonProductDataToAmakan({ imageUrl, readAt, title, url });
     }, 200 * index);
   });
 

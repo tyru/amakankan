@@ -8,7 +8,31 @@ import moment from "moment";
  * @param {String} url
  */
 const sendAmazonProductDataToAmakan = ({ imageUrl, readAt, title, url }) => {
-  chrome.runtime.sendMessage(chrome.runtime.id, { imageUrl, readAt, title, url }, {});
+  chrome.runtime.sendMessage(chrome.runtime.id, {
+    action: "sendAmazonProductDataToAmakan",
+    imageUrl, readAt, title, url
+  }, {});
+};
+
+/**
+ * Resolve after [msec] msec
+ * @param {Integer} msec
+ * @returns {Promise}
+ */
+const delay = (msec) => {
+  return new Promise((done) => {
+    window.setTimeout(done, msec);
+  });
+};
+
+/**
+ * Show notification popup
+ * @param {Object} options
+ */
+const notify = (options) => {
+  chrome.runtime.sendMessage(chrome.runtime.id, {
+    action: "notify", options
+  }, {});
 };
 
 /**
@@ -21,17 +45,6 @@ const fetchPage = (url) => {
     { credentials: "include" }
   ).then((response) => {
     return response.text();
-  });
-};
-
-/**
- * Resolve after [msec] msec
- * @param {Integer} msec
- * @returns {Promise}
- */
-const delay = (msec) => {
-  return new Promise((done) => {
-    window.setTimeout(done, msec);
   });
 };
 
@@ -169,6 +182,14 @@ const scrapeAllBellAlertAlertList = () => {
           });
       });
       return Promise.all(promiseList);
+    }).then(() => {
+      delay(2000).then(() => notify({
+        title: "終了",
+        iconUrl: "images/icon-38.png",
+        message: "インポート完了",
+        priority: 0,
+        type: "basic",
+      }));
     });
 };
 

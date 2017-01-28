@@ -8,7 +8,10 @@ import moment from "moment";
  * @param {String} url
  */
 const sendAmazonProductDataToAmakan = ({ imageUrl, readAt, title, url }) => {
-  chrome.runtime.sendMessage(chrome.runtime.id, { imageUrl, readAt, title, url }, {});
+  chrome.runtime.sendMessage(chrome.runtime.id, {
+    action: "sendAmazonProductDataToAmakan",
+    imageUrl, readAt, title, url
+  }, {});
 };
 
 /**
