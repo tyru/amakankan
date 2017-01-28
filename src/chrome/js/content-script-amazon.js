@@ -60,7 +60,10 @@ const scrapePage = (html) => {
       orderElement.querySelector(".order-info .a-column:first-child .value").textContent.replace(/^\s+/, "").replace(/\s+$/, ""),
       "YYYY年M月D日"
     );
-    const items = orderElement.querySelectorAll(".a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right");
+    const items = orderElement.querySelectorAll([
+      ".a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right",
+      ".a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-base .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right"
+    ].join(", "));
     items.forEach((item, index) => {
       const link = item.querySelector(".a-link-normal");
       if (!link) {
