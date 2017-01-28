@@ -130,27 +130,45 @@ const getAlertIdListFromPage = (content) => {
 };
 
 const scrapeAllBellAlertAlertList = () => {
+  /**
+   * - Do not send duplicate requests ('book.url' may be duplicate)
+   * - Delay 200ms at least between last time when sending a request
+   * @returns {Promise}
+   */
+  const sendWithDelay = (() => {
+    let sentUrl = {};
+    let lastSentTime = Date.now() - 200;
+    return (book) => {
+      if (sentUrl.hasOwnProperty(book.url)) {
+        return Promise.resolve();
+      }
+      sentUrl[book.url] = true;
+      const distance = Date.now() - lastSentTime;
+      const msec = distance >= 200 ? 0 : 200 - distance;
+      return delay(msec).then(() => {
+        sendAmazonProductDataToAmakan(book);
+        lastSentTime = Date.now();
+      });
+    };
+  })();
+
   // GET /users/alert_list/ -> html
   getAlertListPage()
     // Scrape list of alertId from given html -> Array.<Promise<AlertID>>
     .then(getAlertIdListFromPage)
-    // GET /dealings/index/{alertId}/ with 50ms delay -> Array.<Promise.<HTML>>
     .then((alertIdList) => {
       const promiseList = alertIdList.map((alertId, index) => {
-        return delay(index * 50).then(() => getDealingsPage(alertId));
+        // GET /dealings/index/{alertId}/ with delay -> Array.<Promise.<HTML>>
+        return delay(index * 100)
+          .then(() => getDealingsPage(alertId))
+          // Scrape books from html list -> Array.<Book>
+          .then((content) => scrapePage(content))
+          // Register books to amakan with delay
+          .then((books) => {
+            return Promise.all(books.map(sendWithDelay));
+          });
       });
       return Promise.all(promiseList);
-    // Scrape books from html list -> Array.<Book>
-    }).then((htmlList) => {
-      const books = htmlList.reduce((books, html) => books.concat(scrapePage(html)), []);
-      return _.uniq(books, (book) => book.url);
-    // Register books to amakan with 200ms delay
-    }).then((books) => {
-      books.forEach((book, index) => {
-        window.setTimeout(() => {
-          sendAmazonProductDataToAmakan(book);
-        }, index * 200);
-      });
     });
 };
 
