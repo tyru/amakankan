@@ -1,0 +1,12 @@
+machine:
+  services:
+    - docker
+database:
+  override:
+    - echo "Skip database phase"
+dependencies:
+ override:
+    - docker build --file ./docker/node/Dockerfile --tag amakankan_node .
+test:
+  override:
+    - docker run --rm amakankan_node yarn run test
