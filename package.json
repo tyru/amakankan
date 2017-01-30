@@ -40,7 +40,7 @@
     "pack": "run-s build pack:firefox pack:chrome",
     "pack:chrome": "cd dist/chrome && sed -i '' -e '10,15d' manifest.json && zip -r ../amakankan-chrome.zip images js manifest.json",
     "pack:firefox": "cp -r dist/chrome dist/firefox && cd dist/firefox && zip -r ../amakankan-firefox.zip images js manifest.json",
-    "test": "run-s yarn run lint build",
+    "test": "run-s lint build",
     "watch": "run-s build watch:original",
     "watch:amazon": "watchify src/chrome/js/content-script-amazon.js -t babelify -o dist/chrome/js/content-script-amazon.js -v",
     "watch:background": "watchify src/chrome/js/background.js -t babelify -o dist/chrome/js/background.js -v",
