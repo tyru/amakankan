@@ -67,6 +67,16 @@
       ],
       "run_at": "document_end",
       "all_frames": false
+    },
+    {
+      "matches": [
+        "https://alert.shop-bell.com/*"
+      ],
+      "js": [
+        "js/content-script-bell-alert.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
     }
   ],
   "browser_action": {
