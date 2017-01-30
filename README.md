@@ -1,6 +1,6 @@
 # amakankan
 
-[![Build Status](https://travis-ci.org/amakan/amakankan.svg?branch=master)](https://travis-ci.org/amakan/amakankan)
+[![CircleCI](https://circleci.com/gh/amakan/amakankan.svg?style=svg)](https://circleci.com/gh/amakan/amakankan)
 
 amakankan は、[amakan.net](https://amakan.net) のためのブラウザ拡張です。
 
