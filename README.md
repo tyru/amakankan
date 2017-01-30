@@ -2,36 +2,45 @@
 
 [![Build Status](https://travis-ci.org/amakan/amakankan.svg?branch=master)](https://travis-ci.org/amakan/amakankan)
 
-[amakan.net](https://amakan.net) のためのブラウザ拡張。
+amakankan は、[amakan.net](https://amakan.net) のためのブラウザ拡張です。
 
 ![demo](/images/demo.gif)
 
-## インストール方法
+## 利用者用ドキュメント
 
-準備中
+### インストールする
 
-## 使い方
+現状、Chrome ウェブストアや Mozilla Add-ons などには登録されておりません。そのため、自前でブラウザ拡張のコードをコンパイルし、インストールしていただく必要があります。
 
-### Amazon
+### Amazon の商品ページから amakan の対応するページに移動する
 
-- Amazonの[注文履歴ページ](https://www.amazon.co.jp/gp/css/order-history)で拡張のボタンを押すと、読んだ本をamakanに一括登録できます
-- Amazonの商品ページで拡張のボタンを押すと、amakanの対応する書籍のページを開きます
+1. Amazon の商品ページを開きます
+2. ブラウザ拡張のボタンをクリックします
 
-### ブクログ
+### Amazon の購入履歴から読んだ本を一括登録する
 
-- [ブクログ](http://booklog.jp/)の本棚ページで拡張のボタンを押すと、読んだ本をamakanに一括登録できます
+1. Amazonの [注文履歴ページ](https://www.amazon.co.jp/gp/css/order-history) を開きます
+2. ブラウザ拡張のボタンをクリックします
 
-### 読書メーター
+### ブクログの読書履歴から読んだ本を一括登録する
 
-- [読書メーター](http://bookmeter.com/)の読んだ本のページで拡張のボタンを押すと、読んだ本をamakanに一括登録できます
+1. [ブクログ](http://booklog.jp/) の自分の本棚のページを開きます
+2. ブラウザ拡張のボタンをクリックします
 
-### TSUTAYA LOG
+### 読書メーターの読書履歴から読んだ本を一括登録する
 
-- [TSUTAYA LOG](https://log.tsutaya.co.jp/)の履歴ストックページで拡張のボタンを押すと、読んだ本をamakanに一括登録できます
+1. [読書メーター](http://bookmeter.com/) の自分の読んだ本のページを開きます
+2. ブラウザ拡張のボタンをクリックします
 
-### その他
+### TSUTAYA LOG の履歴ストックから読んだ本を一括登録する
 
-- 上記以外のページで拡張のボタンを押すと、https://amakan.net を開きます
+1. [TSUTAYA LOG](https://log.tsutaya.co.jp/) の履歴ストックページを開きます
+2. ブラウザ拡張のボタンをクリックします
+
+### amakan.net に移動する
+
+1. 上記以外のページを開きます
+2. ブラウザ拡張のボタンをクリックします
 
 ## 開発者用ドキュメント
 
