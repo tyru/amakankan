@@ -1,5 +1,21 @@
 var webpack = require("webpack");
 
+const plugins = [
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+];
+
+if (process.env.NODE_ENV === "production") {
+  plugins.push(
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ja/),
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("production"),
+      },
+    }),
+    new webpack.optimize.UglifyJsPlugin()
+  );
+}
+
 module.exports = {
   entry: {
     background: "./src/javascripts/background.js",
@@ -22,12 +38,5 @@ module.exports = {
     filename: "[name].js",
     path: "./dist/javascripts",
   },
-  plugins: process.env.NODE_ENV === "production" ? [
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production"),
-      },
-    }),
-    new webpack.optimize.UglifyJsPlugin(),
-  ] : [],
+  plugins,
 };

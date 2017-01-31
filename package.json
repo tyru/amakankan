@@ -17,10 +17,12 @@
     "underscore": "^1.8.3",
     "watch": "^0.19.1",
     "watchify": "^3.7.0",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-bundle-size-analyzer": "^2.5.0"
   },
   "private": true,
   "scripts": {
+    "analyze": "webpack --json | webpack-bundle-size-analyzer",
     "build": "run-s build:common build:extensions",
     "build:chrome": "run-s build:chrome:mkdir build:chrome:images build:chrome:javascripts build:chrome:manifest",
     "build:chrome:images": "cp src/images/* dist/chrome/images/",
