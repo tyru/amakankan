@@ -10,7 +10,12 @@ amakankan は、[amakan.net](https://amakan.net) のためのブラウザ拡張�
 
 ### インストールする
 
-現状、Chrome ウェブストアや Mozilla Add-ons などには登録されておりません。そのため、自前でブラウザ拡張のコードをコンパイルし、インストールしていただく必要があります。
+現状、Chrome ウェブストアや Mozilla Add-ons などには登録されておりません。そのため、以下のページより拡張のファイルをダウンロードしていただき、ご自身でブラウザにインストールをお願いします。
+
+https://github.com/amakan/amakankan/releases
+
+なお、Firefox の場合、署名を行っていない amakankan のような拡張は、通常の方法ではインストールできません（これは Firefox のアドオンのインストール画面でも説明される事項です）。
+Firefox Developers Edition などの開発者用のバージョンを利用し、`about:config` にて `xpinstall.signatures.required` の値を `false` に変更していただく必要がありますので、ご注意ください。
 
 ### Amazon の商品ページから amakan の対応するページに移動する
 
