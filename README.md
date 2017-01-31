@@ -74,3 +74,33 @@ docker-compose run --rm node yarn run build
 ```bash
 docker-compose run --rm node yarn run pack
 ```
+
+### analyze
+
+Webpack の生成するファイルの容量を調べたい場合は、以下のスクリプトを実行してください。
+
+```bash
+docker-compose run --rm node yarn run analyze
+```
+
+<details>
+<summary>Example Result</summary>
+
+```
+yarn run v0.18.1
+$ webpack --json | webpack-bundle-size-analyzer
+moment: 120.56 KB (51.9%)
+underscore: 51.67 KB (22.3%)
+async: 14.01 KB (6.03%)
+setimmediate: 6.32 KB (2.72%)
+process: 5.17 KB (2.23%)
+lodash: 5.12 KB (2.20%)
+node-libs-browser: 1.33 KB (0.572%)
+  timers-browserify: 1.33 KB (100%)
+  <self>: 0 B (0.00%)
+webpack: 1 KB (0.432%)
+<self>: 26.95 KB (11.6%)
+Done in 2.22s.
+```
+
+</details>
