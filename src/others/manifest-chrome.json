@@ -1,0 +1,89 @@
+{
+  "name": "amakankan",
+  "version": "0.7.0",
+  "manifest_version": 2,
+  "description": "Utilities for amakan.net",
+  "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  },
+  "background": {
+    "scripts": [
+      "javascripts/background.js"
+    ]
+  },
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*",
+    "background",
+    "notifications"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://www.amazon.co.jp/*",
+        "https://www.amazon.co.jp/*"
+      ],
+      "js": [
+        "javascripts/contentScriptAmazon.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "http://booklog.jp/*",
+        "https://booklog.jp/*"
+      ],
+      "js": [
+        "javascripts/contentScriptBooklog.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "http://bookmeter.com/*"
+      ],
+      "js": [
+        "javascripts/contentScriptBookmeter.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://log.tsutaya.co.jp/*"
+      ],
+      "js": [
+        "javascripts/contentScriptTsutayaLog.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://alert.shop-bell.com/*"
+      ],
+      "js": [
+        "javascripts/contentScriptBellAlert.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "browser_action": {
+    "default_action": {
+      "19": "images/icon19.png"
+    },
+    "default_icon": {
+      "19": "images/icon-19.png",
+      "38": "images/icon-38.png"
+    },
+    "default_title": "amakankan"
+  },
+  "web_accessible_resources": [
+    "images/icon-48.png"
+  ]
+}
