@@ -1,3 +1,12 @@
+## 0.8.0
+
+- Support bell-alert
+- Migrate to Webpack
+- Migrate to CircleCI (from TravisCI)
+- Migrate to Docker
+- Improve build flow
+- Separate manifest.json for firefox and chrome
+
 ## 0.7.0
 
 - Support TSUTAYA LOG
