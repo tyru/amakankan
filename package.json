@@ -6,8 +6,6 @@
     "babel-loader": "^6.2.10",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-3": "^6.11.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.0.1",
     "crx": "^3.2.1",
     "eslint": "^3.1.1",
     "fixpack": "^2.3.1",
@@ -16,7 +14,6 @@
     "object-assign": "^4.1.0",
     "underscore": "^1.8.3",
     "watch": "^0.19.1",
-    "watchify": "^3.7.0",
     "webpack": "^2.2.1",
     "webpack-bundle-size-analyzer": "^2.5.0"
   },
