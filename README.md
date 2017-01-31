@@ -17,6 +17,11 @@ https://github.com/amakan/amakankan/releases
 なお、Firefox の場合、署名を行っていない amakankan のような拡張は、通常の方法ではインストールできません（これは Firefox のアドオンのインストール画面でも説明される事項です）。
 Firefox Developers Edition などの開発者用のバージョンを利用し、`about:config` にて `xpinstall.signatures.required` の値を `false` に変更していただく必要がありますので、ご注意ください。
 
+### amakan にログインする
+
+読んだ本を一括登録するには、お使いのブラウザで https://amakan.net にログインしている必要があります。
+一括登録を行う前に、一度 https://amakan.net を開いていただき、ログインしているかどうかをお確かめください。
+
 ### Amazon の商品ページから amakan の対応するページに移動する
 
 1. Amazon の商品ページを開きます
