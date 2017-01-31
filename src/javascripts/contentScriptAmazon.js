@@ -99,7 +99,7 @@ const getCrawlableYears = () => {
  * @returns {Promise}
  */
 const getOrderHistoryPage = ({ page, year }) => {
-  return fetchPage(`/gp/your-account/order-history/ref=oh_aui_pagination_1_${page}?startIndex=${((page - 1) * 10)}&orderFilter=year-${year}`);
+  return fetchPage(`https://www.amazon.co.jp/gp/your-account/order-history/ref=oh_aui_pagination_1_${page}?startIndex=${((page - 1) * 10)}&orderFilter=year-${year}`);
 };
 
 /**
