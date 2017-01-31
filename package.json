@@ -41,7 +41,7 @@
     "lint:fixpack": "fixpack",
     "pack": "run-s build pack:firefox pack:chrome",
     "pack:chrome": "crx pack dist/chrome --zip-output dist/amakankan-chrome.zip",
-    "pack:firefox": "crx pack dist/firefox --zip-output dist/amakankan-firefox.zip",
+    "pack:firefox": "crx pack dist/firefox --zip-output dist/amakankan-firefox.zip && mv dist/amakankan-firefox.zip dist/amakankan-firefox.xpi",
     "test": "run-s lint pack",
     "watch": "run-s build watch:original",
     "watch:extensions": "watch 'yarn run build:extensions' src",
