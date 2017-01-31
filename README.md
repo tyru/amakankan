@@ -84,7 +84,7 @@ docker-compose run --rm node yarn run analyze
 ```
 
 <details>
-<summary>Example Result</summary>
+<summary>Example output</summary>
 
 ```
 yarn run v0.18.1
