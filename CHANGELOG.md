@@ -1,3 +1,8 @@
+## 0.8.1
+
+- Fix bug on Firefox manifest (background permission does not exist)
+- Fix bug on Firefox due to only path URL on `window.fetch`
+
 ## 0.8.0
 
 - Support bell-alert
