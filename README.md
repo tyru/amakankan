@@ -104,3 +104,14 @@ Done in 2.22s.
 ```
 
 </details>
+
+### リリース
+
+新しいバージョンをリリースする場合は、以下の手順に従ってください。
+
+1. CHANGELOG.md を更新する
+1. src/others/manifest-chrome.json のバージョンを更新する
+1. src/others/manifest-filrefox.json のバージョンを更新する
+1. Git の commit にタグを付ける (e.g. `git tag v0.8.0`)
+1. Git のタグを push する (e.g. `git push --tags`)
+1. GitHub の releases に拡張のファイルをアップロードする
