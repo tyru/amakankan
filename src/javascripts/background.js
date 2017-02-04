@@ -94,7 +94,7 @@ const notify = (options) => {
   return enqueueNotifyTask(promise);
 };
 
-const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
+const sendPageUrl = ({url, title, imageUrl, readAt}, retryCount = 0) => new Promise((done) => {
   const isFutureDate = (readAt) => {
     if (typeof readAt !== "string" || readAt === "") {
       return true;
@@ -128,6 +128,11 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
       priority: 0,
       type: "basic",
     }).then(done);
+  }, () => {
+    // Retry up to 3 times
+    if (retryCount <= 3) {
+      sendPageUrl({url, title, imageUrl, readAt}, retryCount + 1);
+    }
   });
 });
 
