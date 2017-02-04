@@ -1,29 +1,97 @@
 import queue from "async/queue";
 import moment from "moment";
 
-let notificationId;
+/**
+ * [
+ *   {
+ *     promise: <Promise>,
+ *     notificationId: <String> (exists and non-null if resolved)
+ *   },
+ *   ...
+ * ]
+ */
+let notifyTasks = [];
+
+/**
+ * @param {Promise.<String>} promise
+ */
+const enqueueNotifyTask = (promise) => {
+  const task = {};
+  task.promise = promise.then((notificationId) => {
+    task.notificationId = notificationId;
+    return notificationId;
+  });
+  notifyTasks.push(task);
+  return task.promise;
+};
+
+/**
+ * Returns `notificationId` if the return value was resolved.
+ * `notificationId` can be null if there are no available promises in
+ * `notifyTasks`.
+ * @return {Promise.<?String>}
+ */
+const getNotificationId = () => {
+  if (notifyTasks.length === 0) {
+    return Promise.resolve(null);
+  }
+  return Promise.race(notifyTasks.map((task) => task.promise))
+    .then((notificationId) => {
+      const task = notifyTasks.find(
+        (task) => task.notificationId === notificationId
+      );
+      if (!task) {
+        if (notifyTasks.length === 0) {
+          return null;
+        } else {
+          return getNotificationId();    // retry
+        }
+      }
+      return notificationId;
+    });
+};
+
 
 const requestQueue = queue((task, callback) => {
   callback();
 });
 
+
+const promisify = (fn) => {
+  return (...args) => {
+    return new Promise((done) => fn(...args, done));
+  };
+};
+
+const createWindow = promisify(chrome.notifications.create);
+const updateWindow = chrome.notifications.update ?
+  promisify(chrome.notifications.update) :
+  (notificationId, options) => new Promise((done) => {
+    chrome.notifications.clear(notificationId, () => {
+      chrome.notifications.create(options, done);
+    });
+  });
+
+/**
+ * There are 3 states of chrome notifications.
+ * 1. If chrome.notifications.create() haven't invoked:
+ *      Invoke chrome.notifications.create().
+ * 2. If chrome.notifications.create() was invoked but it haven't finished yet:
+ *      Wait until it finishes and gets `notificationId`.
+ *      And `chrome.notifications.update(notificationId, ...)`
+ * 3. After 2 was finished:
+ *      `chrome.notifications.update(notificationId, ...)`
+ */
 const notify = (options) => {
-  return new Promise((done) => {
+  const promise = getNotificationId().then((notificationId) => {
     if (notificationId) {
-      if (chrome.notifications.update) {
-        chrome.notifications.update(notificationId, options, done);
-      } else {
-        chrome.notifications.clear(notificationId, () => {
-          chrome.notifications.create(options, done);
-        });
-      }
+      updateWindow(notificationId, options);
+      return notificationId;
     } else {
-      chrome.notifications.create(options, (newNotificationId) => {
-        notificationId = newNotificationId;
-        done();
-      });
+      return createWindow(options);
     }
   });
+  return enqueueNotifyTask(promise);
 };
 
 const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
@@ -59,8 +127,7 @@ const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
       message: "送信完了",
       priority: 0,
       type: "basic",
-    });
-    done();
+    }).then(done);
   });
 });
 
@@ -253,8 +320,8 @@ chrome.browserAction.onClicked.addListener((tab) => {
   }
 });
 
-chrome.notifications.onClosed.addListener((newNotificationId, byUser) => {
-  if (notificationId === newNotificationId) {
-    notificationId = null;
-  }
+chrome.notifications.onClosed.addListener((notificationId, byUser) => {
+  notifyTasks = notifyTasks.filter(
+    (task) => task.notificationId !== notificationId
+  );
 });
