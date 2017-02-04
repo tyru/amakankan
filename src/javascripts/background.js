@@ -1,4 +1,5 @@
 import queue from "async/queue";
+import moment from "moment";
 
 let notificationId;
 
@@ -26,6 +27,18 @@ const notify = (options) => {
 };
 
 const sendPageUrl = ({url, title, imageUrl, readAt}) => new Promise((done) => {
+  const isFutureDate = (readAt) => {
+    if (typeof readAt !== "string" || readAt === "") {
+      return true;
+    }
+    const dt = moment(readAt);
+    return dt.isValid() && dt.isAfter(moment());
+  };
+
+  // Skip if 'readAt' is an invalid date or a future date
+  if (isFutureDate(readAt)) {
+    return;
+  }
   window.fetch(
     "https://amakan.net/imports",
     {
